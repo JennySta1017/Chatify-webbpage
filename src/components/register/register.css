@@ -1,3 +1,13 @@
 #registerform {
-    width: 300px;
+    width: 500px;
+    margin: auto;
+    margin-top: 20px;
+}
+
+.input {
+    background-color: rgb(217, 220, 225);
+}
+
+#formbutton {
+    width: 100px
 }

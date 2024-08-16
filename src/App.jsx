@@ -13,6 +13,13 @@ function App() {
      <Header /> 
      <Navbar />
      <Routes>
+      <Route
+          exact
+          path="/"
+          element={
+            <Home/>
+          }
+          />
         <Route
           exact path="/register"
           element={
@@ -20,13 +27,8 @@ function App() {
           }
           />
          {/*
-        <Route
-          exact
-          path="/"
-          element={
-            <Home/>
-          }
-          />
+        
+          
           <Route
           exact
           path="/login"
