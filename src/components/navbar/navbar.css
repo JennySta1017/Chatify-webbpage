@@ -28,7 +28,7 @@
     color: #f1f1f1;
   }
 
-  #sidenav a:active {
+  #sidenav a.active {
     color: #f1f1f1;
   }
 
