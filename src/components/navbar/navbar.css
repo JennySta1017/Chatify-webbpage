@@ -1,5 +1,5 @@
 /* Sidnavigerings meny */
-.sidenav {
+#sidenav {
     height: 100%;
     width: 225px;
     position: fixed;
@@ -13,7 +13,7 @@
   }
   
   /* The navigation menu links */
-.sidenav a {
+#sidenav a {
     padding: 8px 8px 8px 0px;
     text-align: left;
     text-decoration: none;
@@ -24,11 +24,11 @@
     transition: 0.3s;
   }
 
-  .sidenav a:hover {
+  #sidenav a:hover {
     color: #f1f1f1;
   }
 
-  .sidenav a:active {
+  #sidenav a:active {
     color: #f1f1f1;
   }
 

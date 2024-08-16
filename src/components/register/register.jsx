@@ -1,12 +1,13 @@
 import './register.css';
+import { useState } from "react";
 
 function Register() {
-   /*  const [userName, setuserName] = useState("");
-    const [password, setpassword] = useState(""); */
+    const [userName, setuserName] = useState("");
+    const [password, setpassword] = useState(""); 
     return (
         <>
         <h2>En rubrik för att se om innehållet syns på sidan</h2>
-       {/*  <form id="registerform">
+         <form id="registerform">
       <label>Användarnamn:
         <input
           type="text" 
@@ -19,7 +20,7 @@ function Register() {
           value={password}
           />
           </label>
-        </form> */}
+        </form> 
         </>
     );
     
