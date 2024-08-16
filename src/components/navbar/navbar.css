@@ -9,6 +9,7 @@
     background-color: #111;
     overflow-x: hidden;
     padding-top: 20px;
+    list-style-type: none;
   }
   
   /* The navigation menu links */
@@ -24,6 +25,10 @@
   }
 
   .sidenav a:hover {
+    color: #f1f1f1;
+  }
+
+  .sidenav a:active {
     color: #f1f1f1;
   }
 

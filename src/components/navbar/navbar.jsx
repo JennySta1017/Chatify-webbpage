@@ -6,6 +6,9 @@ const Navbar = () => {
         <>
  <nav>       
 <ul id="sidenav" class="sidenav">
+<li>
+    <NavLink to="/">Home</NavLink>
+    </li>
    
   <li>
     <NavLink to="/login">Logga in</NavLink>

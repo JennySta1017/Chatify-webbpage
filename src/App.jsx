@@ -1,5 +1,7 @@
 import Header from './components/header/header';
 import Navbar from './components/navbar/navbar';
+import Register from './components/register/register';
+import { Route, Routes } from "react-router-dom";
 import './App.css'
 
 function App() {
@@ -9,7 +11,14 @@ function App() {
     <>
      <Header /> 
      <Navbar />
-     {/* <Routes>
+     <Routes>
+        <Route
+          exact path="/register"
+          element={
+            <Register/>
+          }
+          />
+         {/*
         <Route
           exact
           path="/"
@@ -24,16 +33,10 @@ function App() {
             <Login/>
           }
           />
-          <Route
-          exact
-          path="/register"
-          element={
-            <Register/>
-          }
-          />
-      </Routes> */}
+          */}
+      </Routes> 
     </>
   )
 }
 
-export default App
+export default App;
