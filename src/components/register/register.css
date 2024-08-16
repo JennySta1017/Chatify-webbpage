@@ -2,10 +2,12 @@
     width: 500px;
     margin: auto;
     margin-top: 20px;
+    text-align: left;
 }
 
 .input {
     background-color: rgb(217, 220, 225);
+    
 }
 
 #formbutton {
