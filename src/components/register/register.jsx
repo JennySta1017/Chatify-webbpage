@@ -1,45 +1,15 @@
 import './register.css';
 import { useState } from "react";
+
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 
-function Register() {
-    const [newUser, setnewUser] = useState([]);
-    const [userName, setuserName] = useState("");
-    const [password, setpassword] = useState("");
-    const [email, setemail] = useState("");
+const NewUser = ({
+  registerNewUser,
 
-    const HandleSubmit = async (event, userName, password, email) => {
-      event.preventDefault();
+}) => {
+    
 
-      const userObj = {
-        username: userName,
-        password: password,
-        email: email,
-        
-      };
-
-      if(!response.ok) {
-        alert("Något gick fel");
-
-      }
-
-      const response = await fetch('https://chatify-api.up.railway.app/auth/register', {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(userObj),
-      });
-
-      return (
-        <>
-        setnewUser([...newUser, userObj]);
-        navigate("/login");
-        </>
-      )
-
-    }
 
     return (
         <>
@@ -60,7 +30,7 @@ function Register() {
         <Form.Control className="input" type="email" placeholder="E-post" value={email} onChange={(e) => setemail(e.target.value)} />
         </Form.Group>
          
-          <Button id="formbutton" variant="dark" type="submit">
+          <Button id="formbutton" variant="dark" type="submit" onClick={registerNewUser}>
             Spara
           </Button>
         </Form>
@@ -69,5 +39,5 @@ function Register() {
     
 };
 
-export default Register;
+export default NewUser;
 
