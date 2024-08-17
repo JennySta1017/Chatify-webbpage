@@ -1,12 +1,44 @@
 import Header from './components/header/header';
 import Navbar from './components/navbar/navbar';
-import Register from './components/register/register';
+import NewUser from './components/register/register';
 import Home from './components/home/home';
 import { Route, Routes } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import './App.css'
 
 function App() {
-  
+  // Skapa ny användare
+    const [userName, setuserName] = useState("");
+    const [password, setpassword] = useState("");
+    const [email, setemail] = useState("");
+
+    const navigate = useNavigate();
+
+  // Registrera en ny användare
+  const registerNewUser = async () => {
+    const newUser = {
+      username: userName,
+        password: password,
+        email: email,
+    };
+
+    const response = await fetch('https://chatify-api.up.railway.app/auth/register', {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(newUser),
+    });
+ 
+  if (!response.ok) {
+    alert("Det gick inte att registrera användaren");
+    return;
+  }
+   setuserName("");
+   setpassword("");
+   setemail("");
+   navigate("/login");
+  };
 
   return (
     <>
@@ -23,7 +55,7 @@ function App() {
         <Route
           exact path="/register"
           element={
-            <Register/>
+            <NewUser/>
           }
           />
          {/*
