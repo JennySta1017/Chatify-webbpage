@@ -4,9 +4,27 @@
     justify-content: center;
     width: 100%;
     height: 130px;
-    background-color: rgb(29, 27, 34);
+    margin-bottom: 50px;
     font-size: 30px;
     color: #818181;
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 
+}
+
+.headerbox {
+    display: inline-block;
+}
+
+img {
+    width: 200px;
+    padding: 2px;
+    margin-left: 90%;
+}
+#chatefy-box1 {
+    width: 20%;
+    height: 50px;
+}
+
+#chatefy-box2 {
+    width: 80%;
 }
