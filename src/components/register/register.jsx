@@ -1,13 +1,15 @@
 import './register.css';
-import { useState } from "react";
+
 
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 
 const NewUser = ({
   registerNewUser,
-
-}) => {
+  userName,
+  password,
+  email,
+  })  => {
     
 
 
