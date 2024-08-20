@@ -9,11 +9,15 @@ import './App.css'
 
 function App() {
   // Skapa ny användare
-    const [userName, setuserName] = useState("");
-    const [password, setpassword] = useState("");
-    const [email, setemail] = useState("");
+    const [userName, setUserName] = useState("");
+    const [password, setPassword] = useState("");
+    const [email, setEmail] = useState("");
+    const [csrfToken, setCsrfToken] = useState("");
+    const [avatarUrl, setAvatarUrl] = useState('');
 
     const navigate = useNavigate();
+
+  
 
   // Registrera en ny användare
   const registerNewUser = async () => {
@@ -21,9 +25,20 @@ function App() {
       username: userName,
         password: password,
         email: email,
-        avatar:
+        avatar: avatarUrl,
+        csrfToken: csrfToken,
     };
 
+    //Hämta csrf token 
+    useEffect(() => {
+      fetch('https://chatify-api.up.railway.app/csrf', {
+        method: 'PATCH',
+      })
+        .then(res => res.json())
+        .then(data => setCsrfToken(data.csrfToken))
+    }, []);
+
+    //Lägg till ny användare
     const response = await fetch('https://chatify-api.up.railway.app/auth/register', {
       method: "POST",
       headers: {
@@ -32,14 +47,21 @@ function App() {
       body: JSON.stringify(newUser),
     });
  
+    if(response.status === 201) { 
+      alert("Lyckad registrering");
+    }
   if (!response.ok) {
-    alert("Det gick inte att registrera användaren");
-    return;
+    res.error.data;
+  
   }
-   setuserName("");
-   setpassword("");
-   setemail("");
-   navigate("/login");
+   setUserName("");
+   setPassword("");
+   setEmail("");
+   setAvatarUrl("");
+   setCsrfToken("");
+   navigate("/");
+
+   console.log(newUser);
   };
 
   return (
@@ -57,7 +79,19 @@ function App() {
         <Route
           exact path="/register"
           element={
-            <NewUser/>
+            <NewUser
+            registerNewUser={registerNewUser}
+            userName={userName}
+            setUserName={setUserName}
+            password={password}
+            setPassword={setPassword}
+            email={email}
+            setEmail={setEmail}
+            avatarUrl={avatarUrl} 
+            setAvatarUrl={setAvatarUrl}
+            csrfToken={csrfToken}
+            setCsrfToken={setCsrfToken}
+            />
           }
           />
          {/*
