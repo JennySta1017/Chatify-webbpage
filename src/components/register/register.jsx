@@ -40,7 +40,7 @@ const NewUser = ({
           <Form.Control className="input" type="text" placeholder="Ange URL till avatar" value={avatarUrl} onChange={(e) => setAvatarUrl(e.target.value)}/>
           </Form.Group>
          
-          <Button id="registerbutton" variant="dark" type="submit" onClick={registerNewUser}>
+          <Button id="registerbutton" variant="dark" type="button" onClick={registerNewUser}>
             Spara
           </Button>
         </Form>
