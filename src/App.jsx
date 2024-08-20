@@ -3,7 +3,7 @@ import Navbar from './components/navbar/navbar';
 import NewUser from './components/register/register';
 import Home from './components/home/home';
 import Login from './components/login/login';
-import { useState } from "react";
+import { useState, useEffect} from "react";
 import { Route, Routes } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import './App.css'
@@ -18,10 +18,19 @@ function App() {
 
     const navigate = useNavigate();
 
-  
+  //Hämta csrf token 
+  useEffect(() => {
+    fetch('https://chatify-api.up.railway.app/csrf', {
+      method: 'PATCH',
+    })
+      .then(res => res.json())
+      .then(data => setCsrfToken(data.csrfToken))
+  }, []);
+
 
   // Registrera en ny användare
   const registerNewUser = async () => {
+    console.log("Attempting to register new user...");
     const newUser = {
       username: userName,
         password: password,
@@ -30,15 +39,7 @@ function App() {
         csrfToken: csrfToken,
     };
 
-    //Hämta csrf token 
-    useEffect(() => {
-      fetch('https://chatify-api.up.railway.app/csrf', {
-        method: 'PATCH',
-      })
-        .then(res => res.json())
-        .then(data => setCsrfToken(data.csrfToken))
-    }, []);
-
+    
     //Lägg till ny användare
     const response = await fetch('https://chatify-api.up.railway.app/auth/register', {
       method: "POST",
@@ -48,19 +49,22 @@ function App() {
       body: JSON.stringify(newUser),
     });
  
-    if(response.status === 201) { 
+    if(response.ok) { 
       alert("Lyckad registrering");
-    }
-  if (!response.ok) {
-    res.error.data;
-  
+    } else {
+      const errorData = await response.json();
+      console.error("Error registering user:", errorData);
+      alert(errorData.error || "Ett fel uppstod vid registreringen");
+    return;
   }
+  
+  
    setUserName("");
    setPassword("");
    setEmail("");
    setAvatarUrl("");
    setCsrfToken("");
-   navigate("/");
+   navigate("/login");
 
    console.log(newUser);
   };
