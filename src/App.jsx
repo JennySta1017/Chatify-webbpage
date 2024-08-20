@@ -2,6 +2,7 @@ import Header from './components/header/header';
 import Navbar from './components/navbar/navbar';
 import NewUser from './components/register/register';
 import Home from './components/home/home';
+import Login from './components/login/login';
 import { useState } from "react";
 import { Route, Routes } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
@@ -94,17 +95,15 @@ function App() {
             />
           }
           />
-         {/*
-        
-          
-          <Route
+         {
+        <Route
           exact
           path="/login"
           element={
             <Login/>
           }
           />
-          */}
+          }
       </Routes> 
     </>
   )
