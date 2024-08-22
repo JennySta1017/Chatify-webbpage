@@ -22,6 +22,9 @@ function App() {
     const [response, setResponse] = useState('');
     const [isAuthenticated, setIsAuthenticated] = useState(false);
 
+    //avkoda data från jwtToken
+    const [decodedJwt, setdecodedJwt] = useState('');
+
     const navigate = useNavigate();
 
   //Hämta csrf token 
@@ -101,6 +104,10 @@ function App() {
     // Spara token 
     setJwtToken(data.token);
     setIsAuthenticated(true);
+    // rensa input-fälten
+    setUserName("");
+    setPassword("");
+
     navigate("/chat");
   } else {
     alert(data.error || "Ett fel uppstod vid inloggning");
@@ -117,6 +124,13 @@ function App() {
       // setResponse(data.message);
   };
 
+   // Logga ut
+   const handleLogout = () => {
+    setJwtToken('');
+    setIsAuthenticated(false);
+    
+  };
+
  // Definiera ProtectedRoute-komponenten
 const ProtectedRoute = ({ isAuthenticated }) => {
   return isAuthenticated ? <Outlet /> : <Navigate to="/login" />;
@@ -125,7 +139,10 @@ const ProtectedRoute = ({ isAuthenticated }) => {
   return (
     <>
      <Header /> 
-     <Navbar />
+     <Navbar 
+     isAuthenticated={isAuthenticated} 
+     handleLogout={handleLogout}
+     />
      <Routes>
       <Route
           exact
@@ -171,7 +188,9 @@ const ProtectedRoute = ({ isAuthenticated }) => {
           <Route 
           exact path="/chat" 
           element={
-          <Chat />
+          <Chat 
+          
+          />
           } />
         </Route>
 
