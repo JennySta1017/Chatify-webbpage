@@ -16,6 +16,10 @@ function App() {
     const [csrfToken, setCsrfToken] = useState("");
     const [avatarUrl, setAvatarUrl] = useState('');
 
+    //Logga in
+    const [jwtToken, setJwtToken] = useState('');
+    const [response, setResponse] = useState('');
+
     const navigate = useNavigate();
 
   //Hämta csrf token 
@@ -69,6 +73,53 @@ function App() {
    console.log(newUser);
   };
 
+  //Logga in genom att hämta JWT
+  const handleLogin = async () => {
+    setResponse('');
+    try {
+      const response = await fetch('https://chatify-api.up.railway.app/auth/token', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username:userName, password:password, csrfToken:csrfToken }),
+      });
+      
+       // Kontrollera responsens status
+        console.log('Response status:', response.status);
+
+      const data = await response.json();
+      
+      // Logga data från servern
+      console.log('Response data:', data); 
+
+
+  if (response.ok) {
+    alert("Lyckad inloggning"); 
+    // Spara token 
+    setJwtToken(data.token);
+  } else {
+    alert(data.error || "Ett fel uppstod vid inloggning");
+  }
+
+} catch (error) {
+  console.error("Error logging in:", error);
+  alert("Ett fel uppstod vid inloggning");
+}
+     
+      /* 
+        När .env producerad till server
+      */
+      // setResponse(data.message);
+  };
+
+  //definiera protected routes
+  const ProtectedRoute = () => { 
+    const { isAuthenticated } = useAuth();
+      if (!isAuthenticated) {
+      navigate("/login");
+    }    
+  }
   return (
     <>
      <Header /> 
@@ -99,15 +150,23 @@ function App() {
             />
           }
           />
-         {
+         
         <Route
           exact
           path="/login"
           element={
-            <Login/>
+            <Login
+            handleLogin={handleLogin}
+            userName={userName}
+            setUserName={setUserName}
+            password={password}
+            setPassword={setPassword}
+            />
           }
           />
-          }
+          <Route element={<ProtectedRoute />}>
+          
+          </Route>
       </Routes> 
     </>
   )

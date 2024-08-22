@@ -12,7 +12,7 @@ const NewUser = ({
   email,
   setEmail,
   avatarUrl, 
-  setAvatarUrl
+  setAvatarUrl,
   })  => {
     
 
