@@ -3,9 +3,10 @@ import Navbar from './components/navbar/navbar';
 import NewUser from './components/register/register';
 import Home from './components/home/home';
 import Login from './components/login/login';
+import Chat from './components/chat/chat';
 import { useState, useEffect} from "react";
 import { Route, Routes } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import { Outlet, Navigate, useNavigate } from "react-router-dom";
 import './App.css'
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
     //Logga in
     const [jwtToken, setJwtToken] = useState('');
     const [response, setResponse] = useState('');
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
 
     const navigate = useNavigate();
 
@@ -98,6 +100,8 @@ function App() {
     alert("Lyckad inloggning"); 
     // Spara token 
     setJwtToken(data.token);
+    setIsAuthenticated(true);
+    navigate("/chat");
   } else {
     alert(data.error || "Ett fel uppstod vid inloggning");
   }
@@ -113,13 +117,11 @@ function App() {
       // setResponse(data.message);
   };
 
-  //definiera protected routes
-  const ProtectedRoute = () => { 
-    const { isAuthenticated } = useAuth();
-      if (!isAuthenticated) {
-      navigate("/login");
-    }    
-  }
+ // Definiera ProtectedRoute-komponenten
+const ProtectedRoute = ({ isAuthenticated }) => {
+  return isAuthenticated ? <Outlet /> : <Navigate to="/login" />;
+};
+
   return (
     <>
      <Header /> 
@@ -164,9 +166,15 @@ function App() {
             />
           }
           />
-          <Route element={<ProtectedRoute />}>
-          
-          </Route>
+          {/* Skyddad route för /chat */}
+        <Route element={<ProtectedRoute isAuthenticated={isAuthenticated} />}>
+          <Route 
+          exact path="/chat" 
+          element={
+          <Chat />
+          } />
+        </Route>
+
       </Routes> 
     </>
   )
