@@ -1,25 +1,30 @@
 import './navbar.css';
 import { NavLink } from "react-router-dom";
 
-const Navbar = () => {
+const Navbar = ({isAuthenticated, handleLogout}) => {
     return (
         <>
  <nav>       
 <ul id="sidenav" >
-<li>
+<li id='active-link'>
     <NavLink to="/">Home</NavLink>
     </li>
    
-  <li>
-    <NavLink to="/login">Logga in</NavLink>
+  <li id='active-link'>
+   {!isAuthenticated ? (
+   <NavLink to="/login">Logga in</NavLink> ) : (
+  <NavLink to="/login"> <span onClick={handleLogout} style={{ cursor: "pointer" }}>Logga ut</span></NavLink>
+  )} 
     </li>
-  <li>
+  <li id='active-link'>
   <NavLink to="/register">Registrera dig </NavLink>
   </li>
-  <li>
+  {/* Visa endast om användaren är inloggad */}
+  {isAuthenticated && (
+  <li id='active-link'>
   <NavLink to="/chat">Chatta</NavLink>
   </li>
-  
+  )}
 </ul>
 </nav>
 
