@@ -1,10 +1,14 @@
 import './chat.css';
 
-const Chat = () => {
+const Chat = ({
+    storedUserData,
+}) => {
+
+
 
     return (
         <>
-        <h2>Välkommen ...</h2>
+        <h2>Välkommen {storedUserData?.user}</h2>
         </>
     );
 
