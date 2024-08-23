@@ -17,13 +17,11 @@ function App() {
     const [csrfToken, setCsrfToken] = useState("");
     const [avatarUrl, setAvatarUrl] = useState('');
 
-    //Logga in
-    const [jwtToken, setJwtToken] = useState('');
-    const [response, setResponse] = useState('');
+    //Inloggning
     const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const [storedUserData, setStoredUserData] = useState(null);
 
-    //avkoda data från jwtToken
-    const [decodedJwt, setdecodedJwt] = useState('');
+    const [loading, setLoading] = useState(true);
 
     const navigate = useNavigate();
 
@@ -67,12 +65,10 @@ function App() {
     return;
   }
   
-  
    setUserName("");
    setPassword("");
    setEmail("");
    setAvatarUrl("");
-   setCsrfToken("");
    navigate("/login");
 
    console.log(newUser);
@@ -80,7 +76,7 @@ function App() {
 
   //Logga in genom att hämta JWT
   const handleLogin = async () => {
-    setResponse('');
+    
     try {
       const response = await fetch('https://chatify-api.up.railway.app/auth/token', {
         method: 'POST',
@@ -101,13 +97,16 @@ function App() {
 
   if (response.ok) {
     alert("Lyckad inloggning"); 
-    // Spara token 
-    setJwtToken(data.token);
+    // Dekoda JWT och spara data i localStorage
+    const decodedJwt = JSON.parse(atob(data.token.split('.')[1]));
+    localStorage.setItem('token', data.token);
+    localStorage.setItem('userData', JSON.stringify(decodedJwt)); // Spara hela objektet som en sträng
+    setStoredUserData(decodedJwt);
     setIsAuthenticated(true);
     // rensa input-fälten
     setUserName("");
     setPassword("");
-
+    
     navigate("/chat");
   } else {
     alert(data.error || "Ett fel uppstod vid inloggning");
@@ -124,15 +123,36 @@ function App() {
       // setResponse(data.message);
   };
 
+// Hämta token userData från localStorage vid första laddningen
+useEffect(() => {
+  const token = localStorage.getItem('token');
+  const userData = JSON.parse(localStorage.getItem('userData'));
+  if (token && userData) {
+    setStoredUserData(userData);
+    setIsAuthenticated(true);
+      console.log("User data loaded from localStorage:", userData);
+    } else {
+      setIsAuthenticated(false); // Säkerställa att autentiseringen är falsk om ingen data finns
+    }
+    setLoading(false); // Markera laddningen som färdig
+  }, []);
+
    // Logga ut
    const handleLogout = () => {
-    setJwtToken('');
+    setStoredUserData(null);
+    setCsrfToken('');
+    localStorage.removeItem('token'); // Rensa token från localStorage
+    localStorage.removeItem('userData'); // Rensa användardata från localStorage
     setIsAuthenticated(false);
+    navigate("/login");
     
   };
 
  // Definiera ProtectedRoute-komponenten
-const ProtectedRoute = ({ isAuthenticated }) => {
+const ProtectedRoute = ({ isAuthenticated, loading }) => {
+  if(loading) {
+    return <div>Loading...</div>;
+  }
   return isAuthenticated ? <Outlet /> : <Navigate to="/login" />;
 };
 
@@ -142,6 +162,7 @@ const ProtectedRoute = ({ isAuthenticated }) => {
      <Navbar 
      isAuthenticated={isAuthenticated} 
      handleLogout={handleLogout}
+     
      />
      <Routes>
       <Route
@@ -180,15 +201,17 @@ const ProtectedRoute = ({ isAuthenticated }) => {
             setUserName={setUserName}
             password={password}
             setPassword={setPassword}
+            
             />
           }
           />
           {/* Skyddad route för /chat */}
-        <Route element={<ProtectedRoute isAuthenticated={isAuthenticated} />}>
+        <Route element={<ProtectedRoute isAuthenticated={isAuthenticated} loading={loading}/>}>
           <Route 
           exact path="/chat" 
           element={
           <Chat 
+          storedUserData={storedUserData}
           
           />
           } />

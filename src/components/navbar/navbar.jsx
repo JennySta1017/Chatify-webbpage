@@ -6,23 +6,26 @@ const Navbar = ({isAuthenticated, handleLogout}) => {
         <>
  <nav>       
 <ul id="sidenav" >
-<li id='active-link'>
+  <li id='active-link'>
     <NavLink to="/">Home</NavLink>
-    </li>
+  </li>
    
   <li id='active-link'>
    {!isAuthenticated ? (
-   <NavLink to="/login">Logga in</NavLink> ) : (
-  <NavLink to="/login"> <span onClick={handleLogout} style={{ cursor: "pointer" }}>Logga ut</span></NavLink>
+    <NavLink to="/login">Logga in</NavLink> ) : (
+      <NavLink to="/login" onClick={(e) => {
+        e.preventDefault(); // Förhindra standardlänkens beteende
+        handleLogout(); // Kör utloggningslogiken
+    }}> <span>Logga ut</span></NavLink>
   )} 
-    </li>
+  </li>
   <li id='active-link'>
-  <NavLink to="/register">Registrera dig </NavLink>
+    <NavLink to="/register">Registrera dig </NavLink>
   </li>
   {/* Visa endast om användaren är inloggad */}
   {isAuthenticated && (
   <li id='active-link'>
-  <NavLink to="/chat">Chatta</NavLink>
+    <NavLink to="/chat">Chatta</NavLink>
   </li>
   )}
 </ul>
