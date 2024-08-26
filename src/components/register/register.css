@@ -13,3 +13,7 @@
 #registerbutton {
     width: 100px
 }
+
+#vald-avatar {
+    max-width: 50px;
+}

@@ -1,5 +1,5 @@
 import './register.css';
-
+import React, { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 
@@ -13,33 +13,94 @@ const NewUser = ({
   setEmail,
   avatarUrl, 
   setAvatarUrl,
+  
   })  => {
+
+    // För att hantera visningen av avatarlistan
+  const [showAvatars, setShowAvatars] = useState(false);
+
     
-
-
+//För att välja en av de första 10 avatarerna
+const avatars = Array.from({ length: 10 }, (_, index) =>
+  `https://i.pravatar.cc/150?img=${index + 1}`
+);
+ 
+ // Funktion som visar eller döljer avatarlistan
+ const toggleAvatarList = () => {
+  setShowAvatars(!showAvatars);
+};
     return (
         <>
         <h2>Registrera dig nedan</h2>
          <Form id="registerform">
           <Form.Group className="mb-3" controlId="formBasicUsername">
           <Form.Label>Ange nytt användarnamn:</Form.Label>
-          <Form.Control className="input" type="text" placeholder="Användarnamn" value={userName} onChange={(e) => setUserName(e.target.value)}/>
+          <Form.Control 
+          className="input" 
+          type="text" 
+          placeholder="Användarnamn" 
+          value={userName} 
+          onChange={(e) => setUserName(e.target.value)}
+          />
           </Form.Group>
           
           <Form.Group className="mb-3" controlId="formBasicPassword">
           <Form.Label>Ange nytt lösenord:</Form.Label>
-          <Form.Control className="input" type="password" placeholder="Lösenord" value={password} onChange={(e) => setPassword(e.target.value)}/>
+          <Form.Control 
+          className="input" 
+          type="password" 
+          placeholder="Lösenord" 
+          value={password} 
+          onChange={(e) => setPassword(e.target.value)}
+          />
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="formBasicEmail">
         <Form.Label>E-post address:</Form.Label>
-        <Form.Control className="input" type="email" placeholder="E-post" value={email} onChange={(e) => setEmail(e.target.value)} />
+        <Form.Control 
+        className="input" 
+        type="email" 
+        placeholder="E-post" 
+        value={email} 
+        onChange={(e) => setEmail(e.target.value)} 
+        />
         </Form.Group>
+
         <Form.Group className="mb-3" controlId="formBasicavatar">
-          <Form.Label>Ange nytt användarnamn:</Form.Label>
-          <Form.Control className="input" type="text" placeholder="Ange URL till avatar" value={avatarUrl} onChange={(e) => setAvatarUrl(e.target.value)}/>
+        <Button 
+        id="avatarbutton" 
+        variant="dark" 
+        type="button" 
+        onClick={toggleAvatarList} //för att visa/dölja listan
+        >
+        Välj avatar
+        </Button>
+        
+        {/* Visar avatarlistan om showAvatars är true */}
+        {showAvatars && (
+          <div style={{ marginTop: '10px' }}>
+            {avatars.map((url, index) => (
+            <img
+              key={index}
+              src={url}
+              alt={`Avatar ${index + 1}`}
+              style={{ cursor: 'pointer', margin: '5px' }}
+              onClick={() => {
+                setAvatarUrl(url); // Sätter den valda avatar-URLen
+                setShowAvatars(false); // Döljer listan efter valet
+                }}
+                />
+              ))}
+            </div>
+          )}
+          {/* Visar vald avatar eller en plats för feedback */}
+          {avatarUrl && (
+            <div style={{ marginTop: '10px' }}>
+              <p>Vald avatar:</p>
+              <img id='vald-avatar' src={avatarUrl} alt="Vald avatar"  />
+            </div>
+          )}
           </Form.Group>
-         
           <Button id="registerbutton" variant="dark" type="button" onClick={registerNewUser}>
             Spara
           </Button>

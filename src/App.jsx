@@ -17,6 +17,10 @@ function App() {
     const [csrfToken, setCsrfToken] = useState("");
     const [avatarUrl, setAvatarUrl] = useState('');
 
+   
+
+ 
+
     //Inloggning
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [storedUserData, setStoredUserData] = useState(null);
@@ -47,6 +51,8 @@ function App() {
     };
 
     
+
+    
     //Lägg till ny användare
     const response = await fetch('https://chatify-api.up.railway.app/auth/register', {
       method: "POST",
@@ -68,7 +74,7 @@ function App() {
    setUserName("");
    setPassword("");
    setEmail("");
-   setAvatarUrl("");
+   //setAvatarUrl("");
    navigate("/login");
 
    console.log(newUser);
