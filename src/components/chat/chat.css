@@ -1,10 +1,19 @@
 #user-box {
-    display: flex;
-    margin-left: 30%;
+    display: flex; /* Flexbox för att placera avatar och text horisontellt */
+    padding-left: 10px; /* Justera padding för placering */
+    margin-left: 0px;
+    
+}
+#welcome-box {
+    padding-top: 45px;
 }
 
 #avatar-box {
-    margin-left:auto;
-    max-width: 100px;
-    padding: 5px;
+    margin-right: 30px;
 }
+
+#avatar-box img {
+    border-radius: 20%;
+    max-width: 100px;
+}
+

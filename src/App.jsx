@@ -17,10 +17,6 @@ function App() {
     const [csrfToken, setCsrfToken] = useState("");
     const [avatarUrl, setAvatarUrl] = useState('');
 
-   
-
- 
-
     //Inloggning
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [storedUserData, setStoredUserData] = useState(null);
@@ -28,6 +24,8 @@ function App() {
     const [loading, setLoading] = useState(true);
 
     const navigate = useNavigate();
+    const [isNavOpen, setIsNavOpen] = useState(false);
+
 
   //Hämta csrf token 
   useEffect(() => {
@@ -166,11 +164,12 @@ const ProtectedRoute = ({ isAuthenticated, loading }) => {
     <>
      <Header /> 
      <Navbar 
+     isNavOpen={isNavOpen} 
+     setIsNavOpen={setIsNavOpen}
      isAuthenticated={isAuthenticated} 
      handleLogout={handleLogout}
-     
-     
      />
+     <div id="main-content" className={`main-content ${isNavOpen ? 'nav-open' : ''}`}>
      <Routes>
       <Route
           exact
@@ -223,8 +222,8 @@ const ProtectedRoute = ({ isAuthenticated, loading }) => {
           />
           } />
         </Route>
-
-      </Routes> 
+        
+      </Routes> </div>
     </>
   )
 }

@@ -1,6 +1,9 @@
+#login-text {
+    text-align: left;
+}
 #loginform {
     width: 500px;
-    margin: auto;
+    margin-left: 0px;
     margin-top: 20px;
     text-align: left;
 }
@@ -12,3 +15,4 @@
 #loginbutton {
     width: 100px;
 }
+

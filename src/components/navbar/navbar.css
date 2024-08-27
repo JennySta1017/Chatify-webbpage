@@ -33,16 +33,17 @@ nav {
     overflow-x: hidden;
     padding-top: 10px;
     list-style-type: none;
+    transition: 0.3s;
   }
 
   /* Öppna sidenav */
 .sidenav.open {
-  width: 250px; /* Sätt bredden till 250px när öppen */
+  width: 230px; /* Sätt bredden till 250px när öppen */
 }
   
   /* Navigationslänkar i sidenav*/
 .sidenav a {
-    padding: 8px 8px 8px 8px;
+    padding: 5px 5px 5px 5px;
     text-align: left;
     text-decoration: none;
     font-size: 25px;
@@ -57,7 +58,7 @@ nav {
     color: #f1f1f1;
   }
 
-  #active-link a.active {
+  .active-link a.active {
     color: #f1f1f1;
   }
 
@@ -70,5 +71,8 @@ nav {
   margin-left: 50px;
 }
 
- 
+ #first-link {
+
+  margin-top: 50px;
+ }
 
