@@ -169,6 +169,7 @@ const ProtectedRoute = ({ isAuthenticated, loading }) => {
      isAuthenticated={isAuthenticated} 
      handleLogout={handleLogout}
      
+     
      />
      <Routes>
       <Route

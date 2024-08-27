@@ -1,20 +1,48 @@
+
+/* Allmän navbar styling */
+nav {
+  position: fixed;  /* Fixera navbaren på vänstra sidan */
+  top: 0;
+  left: 0;
+  height: 100%; /* Full höjd */
+  width: 75px; /* Justera bredden på navbaren */
+  background-color: #111; /* Bakgrundsfärg för navbaren */
+  display: flex;
+  align-items: flex-start; /* Justera innehållet till toppen */
+  justify-content: center;
+  z-index: 2; /* Placera navbaren över allt annat innehåll */
+}
+
+/* Hamburger-menu ikon */
+.hamburger {
+  font-size: 30px;
+  cursor: pointer;
+  padding: 10px;
+  color: white;
+  margin:10px;
+}
 /* Sidnavigerings meny */
-#sidenav {
+.sidenav {
     height: 100%;
-    width: 225px;
+    width: 0;
     position: fixed;
-    z-index: 1;
-    top: 20px;
+    z-index:3;
+    top: 0px;
     left: 0;
     background-color: #111;
     overflow-x: hidden;
-    padding-top: 20px;
+    padding-top: 10px;
     list-style-type: none;
   }
+
+  /* Öppna sidenav */
+.sidenav.open {
+  width: 250px; /* Sätt bredden till 250px när öppen */
+}
   
-  /* The navigation menu links */
-#sidenav a {
-    padding: 8px 8px 8px 0px;
+  /* Navigationslänkar i sidenav*/
+.sidenav a {
+    padding: 8px 8px 8px 8px;
     text-align: left;
     text-decoration: none;
     font-size: 25px;
@@ -24,13 +52,23 @@
     transition: 0.3s;
   }
 
-  #sidenav a:hover {
+  /* Hover-effekt för länkar */
+  .sidenav a:hover {
     color: #f1f1f1;
   }
 
   #active-link a.active {
     color: #f1f1f1;
   }
+
+  /* Stängknapp i sidenav */
+.sidenav .closebtn {
+  position: absolute;
+  top: 0;
+  right: 25px;
+  font-size: 36px;
+  margin-left: 50px;
+}
 
  
 
