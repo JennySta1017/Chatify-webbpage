@@ -8,9 +8,8 @@ const Chat = ({
 
     return (
         <div id='user-box'>
-        <div id='welcome-box'><h2>Välkommen {storedUserData?.user}!</h2></div>
-        <div id='avatar-box'><img src={storedUserData.avatar} alt={`Bild av  ${storedUserData.user}`}/></div> 
-
+            <div id='avatar-box'><img src={storedUserData.avatar} alt={`Bild av  ${storedUserData.user}`}/></div> 
+            <div id='welcome-box'><h1>Välkommen {storedUserData?.user}!</h1></div>
         </div>
     );
 

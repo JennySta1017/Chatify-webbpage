@@ -30,7 +30,7 @@ const avatars = Array.from({ length: 10 }, (_, index) =>
   setShowAvatars(!showAvatars);
 };
     return (
-        <>
+        <div id='register-container'>
         <h2>Registrera dig nedan</h2>
          <Form id="registerform">
           <Form.Group className="mb-3" controlId="formBasicUsername">
@@ -105,7 +105,7 @@ const avatars = Array.from({ length: 10 }, (_, index) =>
             Spara
           </Button>
         </Form>
-        </>
+        </div>
     );
     
 };

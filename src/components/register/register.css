@@ -1,8 +1,8 @@
 #registerform {
     width: 500px;
-    margin: auto;
     margin-top: 20px;
     text-align: left;
+    
 }
 
 .input {
@@ -16,4 +16,9 @@
 
 #vald-avatar {
     max-width: 50px;
+}
+
+#register-container {
+    text-align: left;
+    margin-left: 0px;
 }

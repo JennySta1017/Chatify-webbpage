@@ -12,7 +12,11 @@ const Login = ({
 }) => {
 
     return (
+      <>
+      <div id='login-text'>
+    <h1>Logga in på ditt konto</h1>
     
+    </div>
     <Form id='loginform'>
     <Form.Group className="mb-3" controlId="formBasicUser">
         <Form.Label>Användarnamn</Form.Label>
@@ -29,7 +33,7 @@ const Login = ({
         Logga in
       </Button>
     </Form>
-    
+    </>
     
     )
 };

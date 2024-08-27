@@ -8,10 +8,12 @@ const Navbar = ({isAuthenticated, handleLogout}) => {
   
   const openNav = () => {
     setIsNavOpen(true);
+    document.getElementById("main-content").classList.add("shifted"); // Knuffa innehållet åt höger
 };
 
 const closeNav = () => {
     setIsNavOpen(false);
+    document.getElementById("main-content").classList.remove("shifted"); // Återställ innehållet
 };
     
 return (
@@ -23,7 +25,7 @@ return (
 <li>
    <a href="#!" className="closebtn" onClick={closeNav}>&times;</a>
 </li>
-  <li id='active-link'>
+  <li className='active-link' id='first-link'>
     <NavLink 
     to="/" 
     onClick={closeNav}>
@@ -31,7 +33,7 @@ return (
     </NavLink>
   </li>
    
-  <li id='active-link'>
+  <li className='active-link' >
    {!isAuthenticated ? (
     <NavLink 
     to="/login" 
@@ -46,7 +48,7 @@ return (
     }}> <span>Logga ut</span></NavLink>
   )} 
   </li>
-  <li id='active-link'>
+  <li className='active-link' >
     <NavLink 
     to="/register"
     onClick={closeNav}>
@@ -55,7 +57,7 @@ return (
   </li>
   {/* Visa endast om användaren är inloggad */}
   {isAuthenticated && (
-  <li id='active-link'>
+  <li className='active-link' >
     <NavLink 
     to="/chat"
     onClick={closeNav}>

@@ -6,5 +6,15 @@
 }
 
 
+#main-content {
+  transition: margin-left 0.3s; /* Transition för att knuffa innehållet */
+  margin-left: 75px;  /*Standardmarginal */
+}
 
+#main-content.shifted {
+  margin-left: 250px; /* Marginalen ska matcha bredden på den öppna sidenav */
+}
 
+.sidenav.open + .main-content {
+  margin-left: 230px; /* Samma bredd som öppen sidenav */
+}
