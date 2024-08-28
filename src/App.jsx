@@ -1,9 +1,9 @@
-import Header from './components/header/header';
-import Navbar from './components/navbar/navbar';
-import NewUser from './components/register/register';
-import Home from './components/home/home';
-import Login from './components/login/login';
-import Chat from './components/chat/chat';
+import Header from './components/header/Header';
+import Navbar from './components/navbar/Navbar';
+import NewUser from './components/register/Register';
+import Home from './components/home/Home';
+import Login from './components/login/Login';
+import Chat from './components/chat/Chat';
 import { useState, useEffect} from "react";
 import { Route, Routes } from "react-router-dom";
 import { Outlet, Navigate, useNavigate } from "react-router-dom";
@@ -20,17 +20,16 @@ function App() {
     //Inloggning
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [storedUserData, setStoredUserData] = useState(null);
-
+    
     const [loading, setLoading] = useState(true);
-
     const navigate = useNavigate();
     const [isNavOpen, setIsNavOpen] = useState(false);
 
 
   //Hämta csrf token 
-  useEffect(() => {
-    fetch('https://chatify-api.up.railway.app/csrf', {
-      method: 'PATCH',
+    useEffect(() => {
+      fetch('https://chatify-api.up.railway.app/csrf', {
+        method: 'PATCH',
     })
       .then(res => res.json())
       .then(data => setCsrfToken(data.csrfToken))
@@ -38,17 +37,15 @@ function App() {
 
 
   // Registrera en ny användare
-  const registerNewUser = async () => {
-    console.log("Attempting to register new user...");
+    const registerNewUser = async () => {
+      console.log("Attempting to register new user...");
     const newUser = {
-      username: userName,
+        username: userName,
         password: password,
         email: email,
         avatar: avatarUrl,
         csrfToken: csrfToken,
     };
-
-    
 
     
     //Lägg till ny användare
@@ -69,18 +66,17 @@ function App() {
     return;
   }
   
-   setUserName("");
-   setPassword("");
-   setEmail("");
+      setUserName("");
+      setPassword("");
+      setEmail("");
    //setAvatarUrl("");
-   navigate("/login");
+      navigate("/Login");
 
-   console.log(newUser);
+    console.log(newUser);
   };
 
   //Logga in genom att hämta JWT
-  const handleLogin = async () => {
-    
+  const handleLogin = async () => {  
     try {
       const response = await fetch('https://chatify-api.up.railway.app/auth/token', {
         method: 'POST',
@@ -93,25 +89,23 @@ function App() {
        // Kontrollera responsens status
         console.log('Response status:', response.status);
 
-      const data = await response.json();
-      
-      // Logga data från servern
-      console.log('Response data:', data); 
+        const data = await response.json();
+        console.log('Response data:', data); // Logga data från servern
 
 
   if (response.ok) {
     alert("Lyckad inloggning"); 
-    // Dekoda JWT och spara data i localStorage
+    // Dekoda JWT och spara token och användardata i localStorage
     const decodedJwt = JSON.parse(atob(data.token.split('.')[1]));
-    localStorage.setItem('token', data.token);
-    localStorage.setItem('userData', JSON.stringify(decodedJwt)); // Spara hela objektet som en sträng
+    localStorage.setItem('token', data.token); //Sparar token
+    localStorage.setItem('userData', JSON.stringify(decodedJwt)); // Spara dekodad användardata
+    //Uppdatera state
     setStoredUserData(decodedJwt);
     setIsAuthenticated(true);
     // rensa input-fälten
     setUserName("");
     setPassword("");
-    
-    navigate("/chat");
+    navigate("/Chat");
   } else {
     alert(data.error || "Ett fel uppstod vid inloggning");
   }
@@ -128,104 +122,103 @@ function App() {
   };
 
 // Hämta token userData från localStorage vid första laddningen
-useEffect(() => {
-  const token = localStorage.getItem('token');
-  const userData = JSON.parse(localStorage.getItem('userData'));
-  if (token && userData) {
-    setStoredUserData(userData);
-    setIsAuthenticated(true);
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    const userData = JSON.parse(localStorage.getItem('userData'));
+    if (token && userData) {
+      setStoredUserData(userData);
+      setIsAuthenticated(true);
       console.log("User data loaded from localStorage:", userData);
     } else {
       setIsAuthenticated(false); // Säkerställa att autentiseringen är falsk om ingen data finns
     }
-    setLoading(false); // Markera laddningen som färdig
+      setLoading(false); // Markera laddningen som klar
   }, []);
 
    // Logga ut
-   const handleLogout = () => {
-    setStoredUserData(null);
-    setCsrfToken('');
-    localStorage.removeItem('token'); // Rensa token från localStorage
-    localStorage.removeItem('userData'); // Rensa användardata från localStorage
-    setIsAuthenticated(false);
-    navigate("/login");
+    const handleLogout = () => {
+      setStoredUserData(null);
+      setCsrfToken('');
+      localStorage.removeItem('token'); // Rensa token från localStorage
+      localStorage.removeItem('userData'); // Rensa användardata från localStorage
+      setIsAuthenticated(false);
+      navigate("/login");
     
   };
 
  // Definiera ProtectedRoute-komponenten
-const ProtectedRoute = ({ isAuthenticated, loading }) => {
-  if(loading) {
+    const ProtectedRoute = ({ isAuthenticated, loading }) => {
+    if(loading) {
     return <div>Loading...</div>;
   }
-  return isAuthenticated ? <Outlet /> : <Navigate to="/login" />;
+    return isAuthenticated ? <Outlet /> : <Navigate to="/Login" />;
 };
 
   return (
     <>
-     <Header /> 
-     <Navbar 
-     isNavOpen={isNavOpen} 
-     setIsNavOpen={setIsNavOpen}
-     isAuthenticated={isAuthenticated} 
-     handleLogout={handleLogout}
-     />
+      <Header /> 
+      <Navbar 
+        isNavOpen={isNavOpen} 
+        setIsNavOpen={setIsNavOpen}
+        isAuthenticated={isAuthenticated} 
+        handleLogout={handleLogout}
+      />
      <div id="main-content" className={`main-content ${isNavOpen ? 'nav-open' : ''}`}>
      <Routes>
       <Route
           exact
           path="/"
           element={
-            <Home/>
+          <Home/>
           }
-          />
-        <Route
-          exact path="/register"
+      />
+      <Route
+          exact path="/Register"
           element={
-            <NewUser
-            registerNewUser={registerNewUser}
-            userName={userName}
-            setUserName={setUserName}
-            password={password}
-            setPassword={setPassword}
-            email={email}
-            setEmail={setEmail}
-            avatarUrl={avatarUrl} 
-            setAvatarUrl={setAvatarUrl}
-            csrfToken={csrfToken}
-            setCsrfToken={setCsrfToken}
-            />
-          }
+          <NewUser
+          registerNewUser={registerNewUser}
+          userName={userName}
+          setUserName={setUserName}
+          password={password}
+          setPassword={setPassword}
+          email={email}
+          setEmail={setEmail}
+          avatarUrl={avatarUrl} 
+          setAvatarUrl={setAvatarUrl}
+          csrfToken={csrfToken}
+          setCsrfToken={setCsrfToken}
           />
+          }
+      />
          
-        <Route
+      <Route
           exact
-          path="/login"
+          path="/Login"
           element={
-            <Login
-            handleLogin={handleLogin}
-            userName={userName}
-            setUserName={setUserName}
-            password={password}
-            setPassword={setPassword}
-            
-            />
-          }
+          <Login
+          handleLogin={handleLogin}
+          userName={userName}
+          setUserName={setUserName}
+          password={password}
+          setPassword={setPassword}
           />
+          }
+        />
           {/* Skyddad route för /chat */}
         <Route element={<ProtectedRoute isAuthenticated={isAuthenticated} loading={loading}/>}>
-          <Route 
-          exact path="/chat" 
+        <Route 
+          exact path="/Chat" 
           element={
           <Chat 
-          storedUserData={storedUserData}
-          
+          storedUserData={storedUserData} 
           />
-          } />
-        </Route>
-        
-      </Routes> </div>
+          } 
+        />
+        </Route>       
+      </Routes> 
+      </div>
     </>
-  )
-}
+  );
+};
 
 export default App;

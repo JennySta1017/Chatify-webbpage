@@ -4,9 +4,9 @@ nav {
   position: fixed;  /* Fixera navbaren på vänstra sidan */
   top: 0;
   left: 0;
-  height: 100%; /* Full höjd */
-  width: 75px; /* Justera bredden på navbaren */
-  background-color: #111; /* Bakgrundsfärg för navbaren */
+  height: 100%; 
+  width: 75px; 
+  background-color: #111; 
   display: flex;
   align-items: flex-start; /* Justera innehållet till toppen */
   justify-content: center;
