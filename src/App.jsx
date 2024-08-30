@@ -4,6 +4,7 @@ import NewUser from './components/register/Register';
 import Home from './components/home/Home';
 import Login from './components/login/Login';
 import Chat from './components/chat/Chat';
+import MessageInput from './components/message/Message';
 import { useState, useEffect} from "react";
 import { Route, Routes } from "react-router-dom";
 import { Outlet, Navigate, useNavigate } from "react-router-dom";
@@ -18,12 +19,17 @@ function App() {
     const [avatarUrl, setAvatarUrl] = useState('');
 
     //Inloggning
+    const [token, setToken] = useState(localStorage.getItem('token') || '');
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [storedUserData, setStoredUserData] = useState(null);
     
     const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
     const [isNavOpen, setIsNavOpen] = useState(false);
+
+    //Chat
+    const [newMessage, setNewMessage] = useState("");
+    const [messages, setMessages] = useState([]);
 
 
   //Hämta csrf token 
@@ -69,9 +75,7 @@ function App() {
       setUserName("");
       setPassword("");
       setEmail("");
-   //setAvatarUrl("");
       navigate("/Login");
-
     console.log(newUser);
   };
 
@@ -100,6 +104,7 @@ function App() {
     localStorage.setItem('token', data.token); //Sparar token
     localStorage.setItem('userData', JSON.stringify(decodedJwt)); // Spara dekodad användardata
     //Uppdatera state
+    setToken(data.token);
     setStoredUserData(decodedJwt);
     setIsAuthenticated(true);
     // rensa input-fälten
@@ -113,12 +118,7 @@ function App() {
 } catch (error) {
   console.error("Error logging in:", error);
   alert("Ett fel uppstod vid inloggning");
-}
-     
-      /* 
-        När .env producerad till server
-      */
-      // setResponse(data.message);
+}     
   };
 
 // Hämta token userData från localStorage vid första laddningen
@@ -133,7 +133,86 @@ function App() {
       setIsAuthenticated(false); // Säkerställa att autentiseringen är falsk om ingen data finns
     }
       setLoading(false); // Markera laddningen som klar
-  }, []);
+  }, []);  
+
+ 
+// Hämta alla meddelanden för inloggad användare
+   const getMessages = async () => {
+  const token = localStorage.getItem('token'); // Hämta token från localStorage
+
+  if (!token) {
+    console.error('Token not found!');
+    return;
+  }
+  try {
+    const response = await fetch('https://chatify-api.up.railway.app/messages?', {
+      method: 'GET',
+      headers: {
+        Authorization: 'Bearer ' + token,
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (response.ok) {
+      const messages = await response.json();
+      console.log('Fetched messages:', messages);
+      setMessages(messages);
+    } else {
+      console.error('Failed to fetch messages:', response.status);
+      return null;
+    }
+  } catch (error) {
+    console.error('Error fetching messages:', error);
+    return null;
+  }
+};
+//Anropar 'getMessages' när chatten laddas
+ useEffect(() => {
+  console.log("useEffect running, isAuthenticated:", isAuthenticated);
+  if (isAuthenticated) {
+    console.log("Fetching messages...");
+    getMessages();
+   } else {
+      console.log("User is not authenticated, not fetching messages.");
+    }
+  
+}, [isAuthenticated]);  
+  
+   //Skapa nytt meddelande
+   const createNewMessage = async () => {
+     if (!newMessage.trim()) {
+        alert("Meddelandet får inte vara tomt.");
+        return;
+    } 
+
+       const messageData = {
+        text: newMessage,
+        conversationId: null,
+    };
+
+    try {
+        const response = await fetch('https://chatify-api.up.railway.app/messages', {
+            method: 'POST',
+            headers: {
+                Authorization: 'Bearer ' + token,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(messageData),
+        });
+
+        if (response.ok) {
+            const result = await response.json();
+            console.log('Message created successfully:', result);
+            setNewMessage(''); // Rensa textfältet efter lyckad skickning
+            console.log('New message after sending:', newMessage); // Logga nya meddelandet
+        } else {
+            console.error('Failed to create message:', response.status);
+        }
+    } catch (error) {
+        console.error('Error creating message:', error);
+    }
+}; 
+
 
    // Logga ut
     const handleLogout = () => {
@@ -148,9 +227,9 @@ function App() {
 
  // Definiera ProtectedRoute-komponenten
     const ProtectedRoute = ({ isAuthenticated, loading }) => {
-    if(loading) {
+     if(loading) {
     return <div>Loading...</div>;
-  }
+  } 
     return isAuthenticated ? <Outlet /> : <Navigate to="/Login" />;
 };
 
@@ -211,10 +290,24 @@ function App() {
           element={
           <Chat 
           storedUserData={storedUserData} 
+          newMessage={newMessage}
+          setNewMessage={setNewMessage}
+          createNewMessage={createNewMessage}
+          messages={messages}
           />
           } 
         />
-        </Route>       
+        </Route>
+        <Route
+          exact path="/Message"
+          element={
+          <MessageInput 
+          newMessage={newMessage}
+          setNewMessage={setNewMessage}
+          createNewMessage={createNewMessage}
+            />
+          } 
+        />    
       </Routes> 
       </div>
     </>
