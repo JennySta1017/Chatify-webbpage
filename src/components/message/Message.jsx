@@ -3,9 +3,13 @@ import './Message.css'
 import { useState } from "react";
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
+import { useNavigate } from 'react-router-dom';
 
-const MessageInput = () => {
+
+const MessageInput = ({ onNewMessage }) => {
+    
     const [newMessage, setNewMessage] = useState("");
+    const navigate = useNavigate();
 
      //Skapa nytt meddelande
    const createNewMessage = async () => {
@@ -33,7 +37,8 @@ const MessageInput = () => {
            const result = await response.json();
            console.log('Message created successfully:', result);
            setNewMessage(''); // Rensa textfältet efter lyckad skickning
-           console.log('New message after sending:', newMessage); // Logga nya meddelandet
+           onNewMessage(result.latestMessage); // Skicka det nya meddelandet till Chat-komponenten
+           navigate("/Chat")
        } else {
            console.error('Failed to create message:', response.status);
        }
@@ -41,6 +46,8 @@ const MessageInput = () => {
        console.error('Error creating message:', error);
    }
 }; 
+
+    
 
     return (
 
