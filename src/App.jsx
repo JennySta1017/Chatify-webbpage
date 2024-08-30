@@ -27,8 +27,7 @@ function App() {
     const navigate = useNavigate();
     const [isNavOpen, setIsNavOpen] = useState(false);
 
-    //Chat
-    const [newMessage, setNewMessage] = useState("");
+    //Chat meddelande
     const [messages, setMessages] = useState([]);
 
 
@@ -178,41 +177,7 @@ function App() {
   
 }, [isAuthenticated]);  
   
-   //Skapa nytt meddelande
-   const createNewMessage = async () => {
-     if (!newMessage.trim()) {
-        alert("Meddelandet får inte vara tomt.");
-        return;
-    } 
-
-       const messageData = {
-        text: newMessage,
-        conversationId: null,
-    };
-
-    try {
-        const response = await fetch('https://chatify-api.up.railway.app/messages', {
-            method: 'POST',
-            headers: {
-                Authorization: 'Bearer ' + token,
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(messageData),
-        });
-
-        if (response.ok) {
-            const result = await response.json();
-            console.log('Message created successfully:', result);
-            setNewMessage(''); // Rensa textfältet efter lyckad skickning
-            console.log('New message after sending:', newMessage); // Logga nya meddelandet
-        } else {
-            console.error('Failed to create message:', response.status);
-        }
-    } catch (error) {
-        console.error('Error creating message:', error);
-    }
-}; 
-
+  
 
    // Logga ut
     const handleLogout = () => {
@@ -290,24 +255,18 @@ function App() {
           element={
           <Chat 
           storedUserData={storedUserData} 
-          newMessage={newMessage}
-          setNewMessage={setNewMessage}
-          createNewMessage={createNewMessage}
           messages={messages}
           />
           } 
         />
-        </Route>
         <Route
           exact path="/Message"
           element={
           <MessageInput 
-          newMessage={newMessage}
-          setNewMessage={setNewMessage}
-          createNewMessage={createNewMessage}
             />
           } 
-        />    
+        />  
+        </Route>  
       </Routes> 
       </div>
     </>

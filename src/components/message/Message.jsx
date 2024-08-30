@@ -1,7 +1,47 @@
 import React from 'react';
 import './Message.css'
+import { useState } from "react";
+import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
 
-const MessageInput = ({ newMessage, setNewMessage }) => {
+const MessageInput = () => {
+    const [newMessage, setNewMessage] = useState("");
+
+     //Skapa nytt meddelande
+   const createNewMessage = async () => {
+    const token = localStorage.getItem('token');
+    if (!newMessage.trim()) {
+       alert("Meddelandet får inte vara tomt.");
+       return;
+   } 
+        const messageData = {
+        text: newMessage,
+        conversationId: null,
+   };
+
+   try {
+       const response = await fetch('https://chatify-api.up.railway.app/messages', {
+           method: 'POST',
+           headers: {
+               Authorization: 'Bearer ' + token,
+               'Content-Type': 'application/json',
+           },
+           body: JSON.stringify(messageData),
+       });
+
+       if (response.ok) {
+           const result = await response.json();
+           console.log('Message created successfully:', result);
+           setNewMessage(''); // Rensa textfältet efter lyckad skickning
+           console.log('New message after sending:', newMessage); // Logga nya meddelandet
+       } else {
+           console.error('Failed to create message:', response.status);
+       }
+   } catch (error) {
+       console.error('Error creating message:', error);
+   }
+}; 
+
     return (
 
         <Form id="chatmessage" >
@@ -11,6 +51,8 @@ const MessageInput = ({ newMessage, setNewMessage }) => {
             className="input" 
             as="textarea" 
             placeholder="Skriv ett meddelande här..." 
+            value={newMessage}
+            onChange={(e) => setNewMessage(e.target.value)}
             
             />
             </Form.Group>
