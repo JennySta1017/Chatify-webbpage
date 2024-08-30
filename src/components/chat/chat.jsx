@@ -1,21 +1,36 @@
+import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 import './Chat.css';
 import Button from 'react-bootstrap/Button';
-import { useNavigate } from 'react-router-dom';
+
+
 
 const Chat = ({
     storedUserData,
-    newMessage,
-    setNewMessage,
-    createNewMessage,
     messages,
+    setMessages,
+    deleteMessage,
 }) => {
 
     const navigate = useNavigate();
 
     const toNewMessage = () => {
-        navigate("/Message")
+        navigate("/Message");
+    }
+    useEffect(() => {
+        console.log("Messages in Chat component updated:", messages);
+    }, [messages]);
+
+    const handleDelete = async (id) => {
+        await deleteMessage(id);
+        // Uppdatera UI:t genom att filtrera bort det raderade meddelandet
+        setMessages(messages.filter(message => message.id !== id));
     };
 
+    /* useEffect(() => {
+        console.log("Messages updated", messages);
+    }, [messages]);
+ */
     return (
         <>
         <div id='user-box'>
@@ -25,18 +40,23 @@ const Chat = ({
          {/* hämtade meddelanden */}
          <div id="message-box">
          {messages && messages.length > 0 ? (
-    messages.map((message) => (
-        <div key={message.id} className="message-item">
+            messages.map((message, index) => (
+            <div className="message-item" key={message.id || `temp-${index}`}>
             <p>{message.text}</p>
+            <Button 
+            id="erase-btn" 
+            variant="danger"
+            onClick={() => handleDelete(message.id)}>
+            Radera
+          </Button>
         </div>
                 ))
             ) : (
-                <p>Inga meddelanden ännu.</p>
+                <p>Inga meddelanden finns att visa.</p>
             )}
         </div> 
 
-        <Button variant="dark" onClick={toNewMessage}>Skriv ett meddelande</Button>
-        
+        <Button variant="dark" onClick={(toNewMessage)}>Skriv ett meddelande</Button>
         
         </>
     );

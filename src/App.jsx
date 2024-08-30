@@ -29,6 +29,7 @@ function App() {
 
     //Chat meddelande
     const [messages, setMessages] = useState([]);
+    
 
 
   //Hämta csrf token 
@@ -70,12 +71,11 @@ function App() {
       alert(errorData.error || "Ett fel uppstod vid registreringen");
     return;
   }
-  
       setUserName("");
       setPassword("");
       setEmail("");
       navigate("/Login");
-    console.log(newUser);
+      console.log(newUser);
   };
 
   //Logga in genom att hämta JWT
@@ -158,26 +158,49 @@ function App() {
       setMessages(messages);
     } else {
       console.error('Failed to fetch messages:', response.status);
-      return null;
+      
     }
   } catch (error) {
     console.error('Error fetching messages:', error);
-    return null;
+    
   }
 };
 //Anropar 'getMessages' när chatten laddas
  useEffect(() => {
-  console.log("useEffect running, isAuthenticated:", isAuthenticated);
   if (isAuthenticated) {
-    console.log("Fetching messages...");
     getMessages();
    } else {
       console.log("User is not authenticated, not fetching messages.");
     }
   
-}, [isAuthenticated]);  
+}, [isAuthenticated]); 
+
+const handleNewMessage = (newMessage) => {
+  console.log("Adding new message:", newMessage);
+  setMessages(prevMessages => [...prevMessages, newMessage]) // Uppdatera med det nya meddelandet
+};
   
+  //Radera meddelanden
+  const deleteMessage = async (id) => {
+    try {
+      const response = await fetch(`https://chatify-api.up.railway.app/messages/${id}`, {
+          method: "DELETE",
+          headers: {
+            Authorization: 'Bearer ' + token, // Lägg till Authorization-headern
+            'Content-Type': 'application/json',
+        },
+    });
+      if (response.ok) {
+        console.log("Meddelandet har tagits bort.");
+      } else {
+        console.error("Det uppstod ett problem vid borttagning av meddelandet.", response.status);
+      }
+    } catch (error) {
+      console.error("Ett fel uppstod:", error);
+    }
+    }
   
+   
 
    // Logga ut
     const handleLogout = () => {
@@ -256,13 +279,16 @@ function App() {
           <Chat 
           storedUserData={storedUserData} 
           messages={messages}
+          setMessages={setMessages}  
+          deleteMessage={deleteMessage}
           />
           } 
         />
         <Route
           exact path="/Message"
           element={
-          <MessageInput 
+          <MessageInput
+          onNewMessage={handleNewMessage} 
             />
           } 
         />  
