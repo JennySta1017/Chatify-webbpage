@@ -1,8 +1,10 @@
 
 #header {
     position: relative; /* Relativ position för att absolut positionerade element ska vara relativa till denna */
+    margin-top: 0px;
     margin: 10px;
-    height: 100px;
+    height: 20px;
+     
 
 }
 
@@ -24,7 +26,7 @@
 
 @media screen and (max-width: 768px) {
     #header {
-        height: auto; /* Låt höjden anpassas automatiskt */
+         height: auto; /*Låt höjden anpassas automatiskt */
         
     }
 
