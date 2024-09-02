@@ -120,16 +120,28 @@ function App() {
 }     
   };
 
+  // Token går ut efter 1 timme
+  const tokenExpirationTime = new Date().getTime() + 60 * 60 * 1000; // 1 timme framåt
+localStorage.setItem('tokenExpiration', tokenExpirationTime);
+
 // Hämta token userData från localStorage vid första laddningen
   useEffect(() => {
     const token = localStorage.getItem('token');
     const userData = JSON.parse(localStorage.getItem('userData'));
+    const tokenExpiration = localStorage.getItem('tokenExpiration');
+    //Kontrollera om token är giltig
     if (token && userData) {
+      const isTokenExpired = tokenExpiration && new Date().getTime() > tokenExpiration;
+    
+    if(isTokenExpired) {
+      handleLogout();
+    } else { 
       setStoredUserData(userData);
       setIsAuthenticated(true);
       console.log("User data loaded from localStorage:", userData);
+    } 
     } else {
-      setIsAuthenticated(false); // Säkerställa att autentiseringen är falsk om ingen data finns
+      handleLogout();
     }
       setLoading(false); // Markera laddningen som klar
   }, []);  
@@ -208,6 +220,7 @@ const handleNewMessage = (newMessage) => {
       setCsrfToken('');
       localStorage.removeItem('token'); // Rensa token från localStorage
       localStorage.removeItem('userData'); // Rensa användardata från localStorage
+      localStorage.removeItem('tokenExpiration'); // Rensa token expiration
       setIsAuthenticated(false);
       navigate("/login");
     
