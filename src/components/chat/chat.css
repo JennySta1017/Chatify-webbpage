@@ -4,7 +4,7 @@
     margin-left: 0px;
     
 }
-#welcome-box {
+#username-box {
     padding-top: 45px;
 }
 
@@ -17,13 +17,29 @@
     max-width: 100px;
 }
 
-#chatmessage {
-    margin-top: 20px;
-    text-align: left;
-    width: 400px;
+
+.message-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: aquamarine;
+  border: 2px dotted black;
+  border-radius: 15px;
+  max-width: 30%;
+  margin: 10px;
+  padding: 10px;
+  box-sizing: border-box;
     
 }
-.input {
-    background-color: rgb(217, 220, 225);
-}
 
+.message-item p {
+    padding: 10px; 
+    text-align: center; /* Centrera texten om du vill */
+    
+  }
+
+  #erase-btn{
+    height: 30px;
+    margin-left: 5px;
+    
+  }

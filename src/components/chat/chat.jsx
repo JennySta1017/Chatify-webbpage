@@ -35,17 +35,18 @@ const Chat = ({
         <>
         <div id='user-box'>
             <div id='avatar-box'><img src={storedUserData.avatar} alt={`Bild av  ${storedUserData.user}`}/></div> 
-            <div id='welcome-box'><h1>Välkommen {storedUserData?.user}!</h1></div>
+            <div id='username-box'><h1> {storedUserData?.user}</h1></div>
         </div>
          {/* hämtade meddelanden */}
          <div id="message-box">
+            
          {messages && messages.length > 0 ? (
             messages.map((message, index) => (
             <div className="message-item" key={message.id || `temp-${index}`}>
             <p>{message.text}</p>
             <Button 
             id="erase-btn" 
-            variant="danger"
+            variant="secondary"
             onClick={() => handleDelete(message.id)}>
             Radera
           </Button>
