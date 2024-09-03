@@ -24,12 +24,13 @@ function App() {
     const [storedUserData, setStoredUserData] = useState(null);
     
     const [loading, setLoading] = useState(true);
-    const navigate = useNavigate();
+    
     const [isNavOpen, setIsNavOpen] = useState(false);
 
     //Chat meddelande
     const [messages, setMessages] = useState([]);
-    
+
+    const navigate = useNavigate();
 
 
   //Hämta csrf token 
@@ -41,6 +42,134 @@ function App() {
       .then(data => setCsrfToken(data.csrfToken))
   }, []);
 
+// Logga ut
+const handleLogout = () => {
+  setStoredUserData(null);
+  setCsrfToken('');
+  localStorage.removeItem('token'); // Rensa token från localStorage
+  localStorage.removeItem('userData'); // Rensa användardata från localStorage
+  localStorage.removeItem('tokenExpiration'); // Rensa token expiration
+  setIsAuthenticated(false);
+  navigate("/login");
+
+};
+
+// Token går ut efter 1 timme
+const tokenExpirationTime = new Date().getTime() + 60 * 60 * 1000; // 1 timme framåt
+localStorage.setItem('tokenExpiration', tokenExpirationTime);
+
+// Kontrollera om användaren är inloggad och hantera automatisk utloggning
+useEffect(() => {
+  const token = localStorage.getItem('token');
+  const userData = JSON.parse(localStorage.getItem('userData'));
+  const tokenExpiration = localStorage.getItem('tokenExpiration');
+  //Kontrollera om token är giltig
+  if (token && userData) {
+    const isTokenExpired = tokenExpiration && new Date().getTime() > tokenExpiration;
+  
+  if(isTokenExpired) {
+    handleLogout();
+  } else { 
+    setStoredUserData(userData);
+    setIsAuthenticated(true);
+    setLoading(false); // Markera laddningen som klar
+    console.log("User data loaded from localStorage:", userData);
+
+  // Ställ in timeout för automatisk utloggning när token går ut
+  const timeUntilExpiration = tokenExpiration - new Date().getTime();
+  const logoutTimeout = setTimeout(() => {
+    handleLogout();
+  }, timeUntilExpiration); 
+
+  // Rensa timeout om användaren loggar ut manuellt
+  return () => clearTimeout(logoutTimeout);
+}
+  } else {
+    handleLogout();
+    setLoading(false); 
+  }
+    
+}, []);  
+
+//Anropar 'getMessages' när chatten laddas
+useEffect(() => {
+  if (isAuthenticated) {
+    getMessages();
+   } else {
+      console.log("User is not authenticated, not fetching messages.");
+    }
+  
+}, [isAuthenticated]); 
+
+// Hämta alla meddelanden för inloggad användare
+const getMessages = async () => {
+  const token = localStorage.getItem('token'); // Hämta token från localStorage
+
+  if (!token) {
+    console.error('Token not found!');
+    return;
+  }
+  try {
+    const response = await fetch('https://chatify-api.up.railway.app/messages?', {
+      method: 'GET',
+      headers: {
+        Authorization: 'Bearer ' + token,
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (response.ok) {
+      const messages = await response.json();
+      console.log('Fetched messages:', messages);
+      setMessages(messages);
+    } else {
+      console.error('Failed to fetch messages:', response.status);
+      
+    }
+  } catch (error) {
+    console.error('Error fetching messages:', error);
+    
+  }
+};
+
+const handleNewMessage = (newMessage) => {
+  console.log("Adding new message:", newMessage);
+ 
+  setMessages([...messages, newMessage]) // Uppdatera med det nya meddelandet
+  
+    };
+
+    //Radera meddelanden
+  const deleteMessage = async (id) => {
+    try {
+      const response = await fetch(`https://chatify-api.up.railway.app/messages/${id}`, {
+          method: "DELETE",
+          headers: {
+            Authorization: 'Bearer ' + token, // Lägg till Authorization-headern
+            'Content-Type': 'application/json',
+        },
+    });
+      if (response.ok) {
+        console.log("Meddelandet har tagits bort.");
+        // Uppdatera fakemeddelandena i localStorage
+        const storedFakeMessages = JSON.parse(localStorage.getItem('fakeMessages')) || [];
+        const updatedFakeMessages = storedFakeMessages.filter(fakeMessage => fakeMessage.messageId !== id);
+        localStorage.setItem('fakeMessages', JSON.stringify(updatedFakeMessages));
+      } else {
+        console.error("Det uppstod ett problem vid borttagning av meddelandet.", response.status);
+      }
+    } catch (error) {
+      console.error("Ett fel uppstod:", error);
+    }
+    };
+
+    // Definiera ProtectedRoute-komponenten
+    const ProtectedRoute = ({ isAuthenticated, loading }) => {
+      if(loading) {
+     return <div>Loading...</div>;
+   } 
+     return isAuthenticated ? <Outlet /> : <Navigate to="/Login" />;
+ };
 
   // Registrera en ny användare
     const registerNewUser = async () => {
@@ -119,120 +248,6 @@ function App() {
   alert("Ett fel uppstod vid inloggning");
 }     
   };
-
-  // Token går ut efter 1 timme
-  const tokenExpirationTime = new Date().getTime() + 60 * 60 * 1000; // 1 timme framåt
-localStorage.setItem('tokenExpiration', tokenExpirationTime);
-
-// Hämta token userData från localStorage vid första laddningen
-  useEffect(() => {
-    const token = localStorage.getItem('token');
-    const userData = JSON.parse(localStorage.getItem('userData'));
-    const tokenExpiration = localStorage.getItem('tokenExpiration');
-    //Kontrollera om token är giltig
-    if (token && userData) {
-      const isTokenExpired = tokenExpiration && new Date().getTime() > tokenExpiration;
-    
-    if(isTokenExpired) {
-      handleLogout();
-    } else { 
-      setStoredUserData(userData);
-      setIsAuthenticated(true);
-      console.log("User data loaded from localStorage:", userData);
-    } 
-    } else {
-      handleLogout();
-    }
-      setLoading(false); // Markera laddningen som klar
-  }, []);  
-
- 
-// Hämta alla meddelanden för inloggad användare
-   const getMessages = async () => {
-  const token = localStorage.getItem('token'); // Hämta token från localStorage
-
-  if (!token) {
-    console.error('Token not found!');
-    return;
-  }
-  try {
-    const response = await fetch('https://chatify-api.up.railway.app/messages?', {
-      method: 'GET',
-      headers: {
-        Authorization: 'Bearer ' + token,
-        'Content-Type': 'application/json',
-      },
-    });
-
-    if (response.ok) {
-      const messages = await response.json();
-      console.log('Fetched messages:', messages);
-      setMessages(messages);
-    } else {
-      console.error('Failed to fetch messages:', response.status);
-      
-    }
-  } catch (error) {
-    console.error('Error fetching messages:', error);
-    
-  }
-};
-//Anropar 'getMessages' när chatten laddas
- useEffect(() => {
-  if (isAuthenticated) {
-    getMessages();
-   } else {
-      console.log("User is not authenticated, not fetching messages.");
-    }
-  
-}, [isAuthenticated]); 
-
-const handleNewMessage = (newMessage) => {
-  console.log("Adding new message:", newMessage);
-  setMessages(prevMessages => [...prevMessages, newMessage]) // Uppdatera med det nya meddelandet
-};
-  
-  //Radera meddelanden
-  const deleteMessage = async (id) => {
-    try {
-      const response = await fetch(`https://chatify-api.up.railway.app/messages/${id}`, {
-          method: "DELETE",
-          headers: {
-            Authorization: 'Bearer ' + token, // Lägg till Authorization-headern
-            'Content-Type': 'application/json',
-        },
-    });
-      if (response.ok) {
-        console.log("Meddelandet har tagits bort.");
-      } else {
-        console.error("Det uppstod ett problem vid borttagning av meddelandet.", response.status);
-      }
-    } catch (error) {
-      console.error("Ett fel uppstod:", error);
-    }
-    }
-  
-   
-
-   // Logga ut
-    const handleLogout = () => {
-      setStoredUserData(null);
-      setCsrfToken('');
-      localStorage.removeItem('token'); // Rensa token från localStorage
-      localStorage.removeItem('userData'); // Rensa användardata från localStorage
-      localStorage.removeItem('tokenExpiration'); // Rensa token expiration
-      setIsAuthenticated(false);
-      navigate("/login");
-    
-  };
-
- // Definiera ProtectedRoute-komponenten
-    const ProtectedRoute = ({ isAuthenticated, loading }) => {
-     if(loading) {
-    return <div>Loading...</div>;
-  } 
-    return isAuthenticated ? <Outlet /> : <Navigate to="/Login" />;
-};
 
   return (
     <>

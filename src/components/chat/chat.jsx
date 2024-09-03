@@ -3,8 +3,13 @@ import { useEffect } from 'react';
 import './Chat.css';
 import Button from 'react-bootstrap/Button';
 
-
-
+const fakeMessages = [{
+    "text": "Hej! Bla bla bla bla bla bla bla.",
+    "avatar": "https://i.pravatar.cc/150?img=11",
+    "username": "Kompis",
+    "conversationId": null
+  }
+];
 const Chat = ({
     storedUserData,
     messages,
@@ -27,23 +32,37 @@ const Chat = ({
         setMessages(messages.filter(message => message.id !== id));
     };
 
-    /* useEffect(() => {
-        console.log("Messages updated", messages);
-    }, [messages]);
- */
+    
     return (
         <>
         <div id='user-box'>
             <div id='avatar-box'><img src={storedUserData.avatar} alt={`Bild av  ${storedUserData.user}`}/></div> 
             <div id='username-box'><h1> {storedUserData?.user}</h1></div>
         </div>
+        <Button id='tonewmsg' variant="dark" onClick={(toNewMessage)}>Skriv ett nytt meddelande</Button>
          {/* hämtade meddelanden */}
+         
          <div id="message-box">
-            
          {messages && messages.length > 0 ? (
-            messages.map((message, index) => (
-            <div className="message-item" key={message.id || `temp-${index}`}>
-            <p>{message.text}</p>
+                    messages.map((message, index) => {
+                         // Kombinera med fakemeddelandet
+                        const fakeMessage = fakeMessages[index % fakeMessages.length];
+                        
+                        return (
+                            <div className="message-pair" key={message.id || `temp-${index}`}>
+                                <div className="fake-message-item">
+                                    {fakeMessage && (
+                                        <>
+                                            <img src={fakeMessage.avatar} alt={`Bild av ${fakeMessage.username}`} />
+                                            <p>{fakeMessage.username}</p>
+                                            <p>{fakeMessage.text}</p>
+                                        </>
+                                    )}
+                                </div>
+
+                                <div className="my-message-item">
+                                    <p>{message.text}</p>  
+            
             <Button 
             id="erase-btn" 
             variant="secondary"
@@ -51,13 +70,15 @@ const Chat = ({
             Radera
           </Button>
         </div>
-                ))
+        </div>
+                );
+})
             ) : (
                 <p>Inga meddelanden finns att visa.</p>
             )}
         </div> 
 
-        <Button variant="dark" onClick={(toNewMessage)}>Skriv ett meddelande</Button>
+       
         
         </>
     );
