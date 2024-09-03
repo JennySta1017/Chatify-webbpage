@@ -55,41 +55,35 @@ const handleLogout = () => {
 };
 
 // Token går ut efter 1 timme
-const tokenExpirationTime = new Date().getTime() + 60 * 60 * 1000; // 1 timme framåt
-localStorage.setItem('tokenExpiration', tokenExpirationTime);
+/* const tokenExpirationTime = new Date().getTime() + 60 * 60 * 1000; // 1 timme framåt
+localStorage.setItem('tokenExpiration', tokenExpirationTime); */
 
 // Kontrollera om användaren är inloggad och hantera automatisk utloggning
 useEffect(() => {
   const token = localStorage.getItem('token');
   const userData = JSON.parse(localStorage.getItem('userData'));
   const tokenExpiration = localStorage.getItem('tokenExpiration');
-  //Kontrollera om token är giltig
-  if (token && userData) {
+  const checkTokenExpiration = () => {
     const isTokenExpired = tokenExpiration && new Date().getTime() > tokenExpiration;
-  
-  if(isTokenExpired) {
-    handleLogout();
-  } else { 
-    setStoredUserData(userData);
-    setIsAuthenticated(true);
-    setLoading(false); // Markera laddningen som klar
-    console.log("User data loaded from localStorage:", userData);
+    if (isTokenExpired) {
+      handleLogout();
+    } else {
+      setStoredUserData(userData);
+      setIsAuthenticated(true);
+      setLoading(false);
+    }
+  };
 
-  // Ställ in timeout för automatisk utloggning när token går ut
-  const timeUntilExpiration = tokenExpiration - new Date().getTime();
-  const logoutTimeout = setTimeout(() => {
-    handleLogout();
-  }, timeUntilExpiration); 
-
-  // Rensa timeout om användaren loggar ut manuellt
-  return () => clearTimeout(logoutTimeout);
-}
+  if (token && userData) {
+    checkTokenExpiration();
+    // Kontrollera tokenens giltighet var 60:e sekund
+    const intervalId = setInterval(checkTokenExpiration, 60000);
+    return () => clearInterval(intervalId); // Rensa intervallet när komponenten avmonteras
   } else {
     handleLogout();
-    setLoading(false); 
+    setLoading(false);
   }
-    
-}, []);  
+}, []);
 
 //Anropar 'getMessages' när chatten laddas
 useEffect(() => {
@@ -134,10 +128,8 @@ const getMessages = async () => {
 
 const handleNewMessage = (newMessage) => {
   console.log("Adding new message:", newMessage);
- 
   setMessages([...messages, newMessage]) // Uppdatera med det nya meddelandet
-  
-    };
+  };
 
     //Radera meddelanden
   const deleteMessage = async (id) => {

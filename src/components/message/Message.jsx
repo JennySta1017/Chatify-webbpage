@@ -4,24 +4,26 @@ import { useState } from "react";
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import { useNavigate } from 'react-router-dom';
+import DOMPurify from 'dompurify';
 
 
-const MessageInput = ({ onNewMessage }) => {
-    
+const MessageInput = ({ onNewMessage }) => { 
     const [newMessage, setNewMessage] = useState("");
-    
-    
     const navigate = useNavigate();
 
      //Skapa nytt meddelande
    const createNewMessage = async () => {
     const token = localStorage.getItem('token');
-    if (!newMessage.trim()) {
+
+    // Sanitize message input
+    const sanitizedMessage = DOMPurify.sanitize(newMessage);
+
+    if (!sanitizedMessage.trim()) {
        alert("Meddelandet får inte vara tomt.");
        return;
    } 
         const messageData = {
-        text: newMessage,
+        text: sanitizedMessage,
         conversationId: null,
    };
 
@@ -62,7 +64,7 @@ const MessageInput = ({ onNewMessage }) => {
             as="textarea" 
             placeholder="Skriv ett meddelande här..." 
             value={newMessage}
-            onChange={(e) => setNewMessage(e.target.value)}
+            onChange={(e) => setNewMessage(DOMPurify.sanitize(e.target.value))}
             
             />
             </Form.Group>
