@@ -17,29 +17,52 @@
     max-width: 100px;
 }
 
-
-.message-item {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background-color: aquamarine;
-  border: 2px dotted black;
-  border-radius: 15px;
-  max-width: 30%;
-  margin: 10px;
-  padding: 10px;
-  box-sizing: border-box;
-    
+#tonewmsg {
+   margin-left: 0px;
+   margin-top: 20px;
 }
 
-.message-item p {
+.message-pair {
+    display: flex;
+    margin: 10px;
+    justify-content: center;
+    align-items: flex-start; /* Se till att meddelanden är på samma höjd */
+}
+
+.my-message-item, .fake-message-item {
+    max-width: 40%;
+    padding: 10px;
+    word-wrap: break-word;
+    border: 2px dotted black;
+    border-radius: 15px;
+}
+
+
+.my-message-item {
+    text-align: right;
+    background-color: rgb(118, 240, 99);
+    margin-left: 20px;    
+}
+
+/* .my-message-item p {
     padding: 10px; 
-    text-align: center; /* Centrera texten om du vill */
+    text-align: center;  Centrera texten om du vill 
     
-  }
+  } */
 
   #erase-btn{
     height: 30px;
     margin-left: 5px;
     
   }
+
+  .fake-message-item {
+    background-color: #c6d5d0;
+    margin-right: 20px;
+    margin-top: 20px;
+  }
+
+ .fake-message-item img {
+    width: 50px;
+    margin-right: 10px;
+ }

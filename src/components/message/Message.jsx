@@ -9,6 +9,8 @@ import { useNavigate } from 'react-router-dom';
 const MessageInput = ({ onNewMessage }) => {
     
     const [newMessage, setNewMessage] = useState("");
+    
+    
     const navigate = useNavigate();
 
      //Skapa nytt meddelande
@@ -36,6 +38,7 @@ const MessageInput = ({ onNewMessage }) => {
        if (response.ok) {
            const result = await response.json();
            console.log('Message created successfully:', result);
+    
            setNewMessage(''); // Rensa textfältet efter lyckad skickning
            onNewMessage(result.latestMessage); // Skicka det nya meddelandet till Chat-komponenten
            navigate("/Chat")
