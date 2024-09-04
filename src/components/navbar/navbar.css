@@ -43,7 +43,7 @@ nav {
   
   /* Navigationslänkar i sidenav*/
 .sidenav a {
-    padding: 5px 5px 5px 5px;
+    padding: 5px;
     text-align: left;
     text-decoration: none;
     font-size: 25px;

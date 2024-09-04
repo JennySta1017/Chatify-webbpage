@@ -18,51 +18,76 @@
 }
 
 #tonewmsg {
-   margin-left: 0px;
-   margin-top: 20px;
+   margin: 20px 10px;
+   float: left;
+   
+}
+
+#message-box {
+    margin-top: 80px;
 }
 
 .message-pair {
     display: flex;
-    margin: 10px;
-    justify-content: center;
+    justify-content: center; 
     align-items: flex-start; /* Se till att meddelanden är på samma höjd */
 }
 
 .my-message-item, .fake-message-item {
     max-width: 40%;
-    padding: 10px;
-    word-wrap: break-word;
-    border: 2px dotted black;
-    border-radius: 15px;
+    /* padding: 10px; */
+    word-wrap: break-word; 
+       
 }
-
 
 .my-message-item {
-    text-align: right;
-    background-color: rgb(118, 240, 99);
-    margin-left: 20px;    
+    text-align: left;  
+    margin-left: 5%;    
 }
 
-/* .my-message-item p {
-    padding: 10px; 
-    text-align: center;  Centrera texten om du vill 
-    
-  } */
+ .my-message-item p {
+    padding: 20px; 
+    background-color: rgb(118, 240, 99);
+    border: 2px solid black;
+    border-radius: 15px;
+    text-align: center;
+    margin-bottom: 0px;
+  } 
 
   #erase-btn{
     height: 30px;
-    margin-left: 5px;
+    float: right;
+    display: flex;
+    align-items: center;
+    margin-top: 5px;
+    
     
   }
 
-  .fake-message-item {
+  .fake-message-item { 
+    text-align: left;
+  }
+
+  .fake-message-item p {
+    padding: 20px;
     background-color: #c6d5d0;
-    margin-right: 20px;
-    margin-top: 20px;
+    border: 2px dotted black;
+    border-radius: 15px;
+    margin-top: 5px;
+    
   }
 
  .fake-message-item img {
     width: 50px;
-    margin-right: 10px;
+    margin-left: 0px
+    
+ }
+
+ .writer {
+    margin-left: 10px;
+    justify-items: baseline;
+ }
+
+ #no-msg {
+    margin-top: 15%;
  }
