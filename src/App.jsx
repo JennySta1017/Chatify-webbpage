@@ -5,7 +5,6 @@ import Home from './components/home/Home';
 import Login from './components/login/Login';
 import Chat from './components/chat/Chat';
 import MessageInput from './components/message/Message';
-import AlertMessageSuccess from './components/Alerts/AlertMessage';
 import { useState, useEffect} from "react";
 import { Route, Routes } from "react-router-dom";
 import { Outlet, Navigate, useNavigate } from "react-router-dom";
@@ -220,8 +219,7 @@ const handleNewMessage = (newMessage) => {
 
 
   if (response.ok) {
-    AlertMessageSuccess();
-      
+    alert("Lyckad inloggning"); 
     // Dekoda JWT och spara token och användardata i localStorage
     const decodedJwt = JSON.parse(atob(data.token.split('.')[1]));
     localStorage.setItem('token', data.token); //Sparar token
