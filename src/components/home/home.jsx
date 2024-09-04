@@ -5,8 +5,10 @@ function Home () {
     return (
     <>
     <div id='home-box'>
-        <h2>Välkommen till Chatify!</h2>
-        <p>Börja chatta genom att logga in. Om du inte har ett konto börjar du med att registrera dig</p>
+        <h1>Välkommen till Babbelchatten!</h1>
+        <p>Börja chatta genom att logga in. </p>
+        <p>Om du inte har ett konto börjar du med att registrera dig.</p>
+        <p>Ha så kul!</p>
     </div>
     </>
     );
