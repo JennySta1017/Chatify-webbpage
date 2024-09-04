@@ -5,9 +5,11 @@ import Home from './components/home/Home';
 import Login from './components/login/Login';
 import Chat from './components/chat/Chat';
 import MessageInput from './components/message/Message';
+import AlertMessageSuccess from './components/Alerts/AlertMessage';
 import { useState, useEffect} from "react";
 import { Route, Routes } from "react-router-dom";
 import { Outlet, Navigate, useNavigate } from "react-router-dom";
+import Alert from 'react-bootstrap/Alert';
 import './App.css'
 
 function App() {
@@ -54,9 +56,6 @@ const handleLogout = () => {
 
 };
 
-// Token går ut efter 1 timme
-/* const tokenExpirationTime = new Date().getTime() + 60 * 60 * 1000; // 1 timme framåt
-localStorage.setItem('tokenExpiration', tokenExpirationTime); */
 
 // Kontrollera om användaren är inloggad och hantera automatisk utloggning
 useEffect(() => {
@@ -116,6 +115,9 @@ const getMessages = async () => {
       const messages = await response.json();
       console.log('Fetched messages:', messages);
       setMessages(messages);
+    } else if (response.status === 403) {
+      // Token är ogiltig eller har gått ut
+      handleLogout(); // Logga ut användaren
     } else {
       console.error('Failed to fetch messages:', response.status);
       
@@ -218,7 +220,8 @@ const handleNewMessage = (newMessage) => {
 
 
   if (response.ok) {
-    alert("Lyckad inloggning"); 
+    AlertMessageSuccess();
+      
     // Dekoda JWT och spara token och användardata i localStorage
     const decodedJwt = JSON.parse(atob(data.token.split('.')[1]));
     localStorage.setItem('token', data.token); //Sparar token

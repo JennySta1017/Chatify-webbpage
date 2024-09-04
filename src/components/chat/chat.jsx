@@ -40,7 +40,6 @@ const Chat = ({
             <div id='username-box'><h1> {storedUserData?.user}</h1></div>
         </div>
         <Button id='tonewmsg' variant="dark" onClick={(toNewMessage)}>Skriv ett nytt meddelande</Button>
-         {/* hämtade meddelanden */}
          
          <div id="message-box">
          {messages && messages.length > 0 ? (
@@ -53,14 +52,15 @@ const Chat = ({
                                 <div className="fake-message-item">
                                     {fakeMessage && (
                                         <>
-                                            <img src={fakeMessage.avatar} alt={`Bild av ${fakeMessage.username}`} />
-                                            <p>{fakeMessage.username}</p>
+                                            <span className='writer'><img src={fakeMessage.avatar} alt={`Bild av ${fakeMessage.username}`} /> {fakeMessage.username} skriver:</span>
                                             <p>{fakeMessage.text}</p>
+                                            
                                         </>
                                     )}
                                 </div>
 
                                 <div className="my-message-item">
+                                    <span className='writer'>Du skriver:</span>
                                     <p>{message.text}</p>  
             
             <Button 
@@ -74,7 +74,7 @@ const Chat = ({
                 );
 })
             ) : (
-                <p>Inga meddelanden finns att visa.</p>
+                <p id='no-msg'>Inga meddelanden finns att visa.</p>
             )}
         </div> 
 
