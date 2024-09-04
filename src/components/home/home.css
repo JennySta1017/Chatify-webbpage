@@ -1,4 +1,15 @@
 #home-box {
     margin-top: 10px;
+    font-family: fantasy;  
     text-align: left;
+}
+
+#home-box h1 {
+    margin-bottom: 20px;
+}
+
+#home-box p {
+   margin-left: 20px;
+   
+   
 }

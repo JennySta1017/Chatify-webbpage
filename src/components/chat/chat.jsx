@@ -8,7 +8,19 @@ const fakeMessages = [{
     "avatar": "https://i.pravatar.cc/150?img=11",
     "username": "Kompis",
     "conversationId": null
-  }
+    },
+    {  
+    "text": "Bla bla bla bla bla bla bla. Bla bla bla bla bla bla.",
+    "avatar": "https://i.pravatar.cc/150?img=11",
+    "username": "Kompis",
+    "conversationId": null
+    },
+    {
+    "text": "Bla!",
+    "avatar": "https://i.pravatar.cc/150?img=11",
+    "username": "Kompis",
+    "conversationId": null
+    }
 ];
 const Chat = ({
     storedUserData,
@@ -39,44 +51,44 @@ const Chat = ({
             <div id='avatar-box'><img src={storedUserData.avatar} alt={`Bild av  ${storedUserData.user}`}/></div> 
             <div id='username-box'><h1> {storedUserData?.user}</h1></div>
         </div>
-        <Button id='tonewmsg' variant="dark" onClick={(toNewMessage)}>Skriv ett nytt meddelande</Button>
+        <Button id='tonewmsg' variant="outline-primary" onClick={(toNewMessage)}>Skriv ett nytt meddelande</Button>
          
          <div id="message-box">
          {messages && messages.length > 0 ? (
-                    messages.map((message, index) => {
-                         // Kombinera med fakemeddelandet
-                        const fakeMessage = fakeMessages[index % fakeMessages.length];
+                messages.map((message, index) => {
+                 // Kombinera med fakemeddelandet
+                    const fakeMessage = fakeMessages[index % fakeMessages.length];
                         
-                        return (
-                            <div className="message-pair" key={message.id || `temp-${index}`}>
-                                <div className="fake-message-item">
-                                    {fakeMessage && (
-                                        <>
-                                            <span className='writer'><img src={fakeMessage.avatar} alt={`Bild av ${fakeMessage.username}`} /> {fakeMessage.username} skriver:</span>
-                                            <p>{fakeMessage.text}</p>
+                    return (
+                        <div className="message-pair" key={message.id || `temp-${index}`}>
+                            <div className="fake-message-item">
+                                {fakeMessage && (
+                                <>
+                                <span id='fake-writer'> {fakeMessage.username} skriver:</span>
+                                <span id='fake-writer-text'><img src={fakeMessage.avatar} alt={`Bild av ${fakeMessage.username}`} /><p>{fakeMessage.text}</p></span>
                                             
-                                        </>
-                                    )}
+                                </>
+                                )}
                                 </div>
 
-                                <div className="my-message-item">
-                                    <span className='writer'>Du skriver:</span>
-                                    <p>{message.text}</p>  
+                            <div className="my-message-item">
+                                <span className='writer'>Du skriver:</span>
+                                <p>{message.text}</p>  
             
-            <Button 
-            id="erase-btn" 
-            variant="secondary"
-            onClick={() => handleDelete(message.id)}>
-            Radera
-          </Button>
-        </div>
-        </div>
-                );
-})
-            ) : (
-                <p id='no-msg'>Inga meddelanden finns att visa.</p>
-            )}
-        </div> 
+                        <Button 
+                            id="erase-btn" 
+                            variant="outline-danger"
+                            onClick={() => handleDelete(message.id)}>
+                            Radera
+                        </Button>
+                            </div>
+                        </div>
+                    );
+                    })
+                    ) : (
+                        <p id='no-msg'>Inga meddelanden finns att visa.</p>
+                    )}
+            </div> 
 
        
         

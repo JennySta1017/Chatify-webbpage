@@ -1,6 +1,6 @@
 
 #header {
-    position: relative; /* Relativ position för att absolut positionerade element ska vara relativa till denna */
+    /* position: relative; Relativ position för att absolut positionerade element ska vara relativa till denna */
     margin-top: 0px;
     margin: 10px;
     height: 20px;
@@ -10,11 +10,13 @@
 
 
 #headimg {
-    position: absolute;
+    /* position: absolute; */
     top: 0;
     right: 0;
-    width: 180px;
-    margin: 5px; /* Justera marginalen om det behövs */
+    width: 150px;
+    margin: 5px; 
+    margin-left: 80%;
+
 }
 
 @media screen and (max-width: 1024px) {

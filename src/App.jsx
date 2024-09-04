@@ -52,6 +52,7 @@ const handleLogout = () => {
   localStorage.removeItem('tokenExpiration'); // Rensa token expiration
   setIsAuthenticated(false);
   navigate("/login");
+  clearTimeout(logoutTimer); // Rensa timeout när användaren loggas ut manuellt
 
 };
 
@@ -61,6 +62,7 @@ useEffect(() => {
   const token = localStorage.getItem('token');
   const userData = JSON.parse(localStorage.getItem('userData'));
   const tokenExpiration = localStorage.getItem('tokenExpiration');
+  
   const checkTokenExpiration = () => {
     const isTokenExpired = tokenExpiration && new Date().getTime() > tokenExpiration;
     if (isTokenExpired) {
@@ -69,7 +71,13 @@ useEffect(() => {
       setStoredUserData(userData);
       setIsAuthenticated(true);
       setLoading(false);
+
+      // Ställ in timeout för automatisk utloggning när tokenen går ut
+      const timeUntilLogout = tokenExpiration - new Date().getTime();
+      if (timeUntilLogout > 0) {
+        const logoutTimer = setTimeout(handleLogout, timeUntilLogout);
     }
+  }
   };
 
   if (token && userData) {
@@ -83,10 +91,12 @@ useEffect(() => {
   }
 }, []);
 
-//Anropar 'getMessages' när chatten laddas
+//Anropar 'getMessages' när chatten laddas sätt timer för att loggas ut efter en timme när token gått ut
 useEffect(() => {
   if (isAuthenticated) {
     getMessages();
+    const logoutTimer = setTimeout(handleLogout, 3600000); // 3600000 ms = 1 timme
+    return () => clearTimeout(logoutTimer); // Rensa timeout om användaren loggar ut tidigare
    } else {
       console.log("User is not authenticated, not fetching messages.");
     }
@@ -148,6 +158,9 @@ const handleNewMessage = (newMessage) => {
         const storedFakeMessages = JSON.parse(localStorage.getItem('fakeMessages')) || [];
         const updatedFakeMessages = storedFakeMessages.filter(fakeMessage => fakeMessage.messageId !== id);
         localStorage.setItem('fakeMessages', JSON.stringify(updatedFakeMessages));
+      } else if (response.status === 403) {
+        // Token är ogiltig eller har gått ut
+        handleLogout(); // Logga ut användaren
       } else {
         console.error("Det uppstod ett problem vid borttagning av meddelandet.", response.status);
       }
