@@ -58,25 +58,27 @@ const MessageInput = ({ onNewMessage }) => {
     
 
     return (
+        <>
 
         <Form id="chatmessage" >
-            <Form.Group className="mb-3" controlId="formBasicChat">
-            <Form.Label>Skriv ett nytt meddelande:</Form.Label>
-            <Form.Control 
-            className="input" 
+            
+        <Form.Group className="mb-3" controlId="Textarea">
+        <Form.Label>Skriv ett nytt meddelande</Form.Label>
+        <Form.Control 
             as="textarea" 
+            rows={5} 
+            className="input" 
             placeholder="Skriv ett meddelande här..." 
             value={newMessage}
-            onChange={(e) => setNewMessage }
+            onChange={(e) => setNewMessage(DOMPurify.sanitize(e.target.value)) }/>
+        </Form.Group>
             
-            />
-            </Form.Group>
-            <Button id="chatbutton" variant="dark" type="button" onClick={createNewMessage}>
-            Spara
-            </Button>
+        <Button id="chatbutton" variant="dark" type="button" onClick={createNewMessage}>
+            Skicka
+        </Button>
         </Form>
 
-
+</>
     );
 
 };
