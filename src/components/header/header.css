@@ -1,9 +1,10 @@
 
 #header {
-    /* position: relative; Relativ position för att absolut positionerade element ska vara relativa till denna */
+    position: relative; 
     margin-top: 0px;
     margin: 10px;
     height: 20px;
+    z-index: 1;
      
 
 }
