@@ -5,7 +5,7 @@ import Home from './components/home/Home';
 import Login from './components/login/Login';
 import Chat from './components/chat/Chat';
 import MessageInput from './components/message/Message';
-import { useState, useEffect} from "react";
+import { useState, useEffect, useRef } from "react";
 import { Route, Routes } from "react-router-dom";
 import { Outlet, Navigate, useNavigate } from "react-router-dom";
 import Alert from 'react-bootstrap/Alert';
@@ -31,6 +31,7 @@ function App() {
     //Chat meddelande
     const [messages, setMessages] = useState([]);
 
+    const logoutTimerRef = useRef(null);
     const navigate = useNavigate();
 
 
@@ -42,19 +43,6 @@ function App() {
       .then(res => res.json())
       .then(data => setCsrfToken(data.csrfToken))
   }, []);
-
-// Logga ut
-const handleLogout = () => {
-  setStoredUserData(null);
-  setCsrfToken('');
-  localStorage.removeItem('token'); // Rensa token från localStorage
-  localStorage.removeItem('userData'); // Rensa användardata från localStorage
-  localStorage.removeItem('tokenExpiration'); // Rensa token expiration
-  setIsAuthenticated(false);
-  navigate("/login");
-  clearTimeout(logoutTimer); // Rensa timeout när användaren loggas ut manuellt
-
-};
 
 
 // Kontrollera om användaren är inloggad och hantera automatisk utloggning
@@ -75,21 +63,40 @@ useEffect(() => {
       // Ställ in timeout för automatisk utloggning när tokenen går ut
       const timeUntilLogout = tokenExpiration - new Date().getTime();
       if (timeUntilLogout > 0) {
-        const logoutTimer = setTimeout(handleLogout, timeUntilLogout);
+        logoutTimerRef.current = setTimeout(handleLogout, timeUntilLogout);
     }
   }
   };
-
+  //Om token och användardata finns, kontrollera om token är giltig
   if (token && userData) {
     checkTokenExpiration();
     // Kontrollera tokenens giltighet var 60:e sekund
     const intervalId = setInterval(checkTokenExpiration, 60000);
     return () => clearInterval(intervalId); // Rensa intervallet när komponenten avmonteras
-  } else {
+  } else if (token){
     handleLogout();
+  } else {
+    //om ingen token finns, har användaren inte loggat in än
     setLoading(false);
   }
 }, []);
+
+// Logga ut
+const handleLogout = () => {
+  setStoredUserData(null);
+  setCsrfToken('');
+  localStorage.removeItem('token'); // Rensa token från localStorage
+  localStorage.removeItem('userData'); // Rensa användardata från localStorage
+  localStorage.removeItem('tokenExpiration'); // Rensa token expiration
+  setIsAuthenticated(false);
+  navigate("/login");
+ 
+  if (logoutTimerRef.current) {
+    clearTimeout(logoutTimerRef.current); // Rensa timeout om den finns
+    logoutTimerRef.current = null;
+  }
+
+};
 
 //Anropar 'getMessages' när chatten laddas sätt timer för att loggas ut efter en timme när token gått ut
 useEffect(() => {
