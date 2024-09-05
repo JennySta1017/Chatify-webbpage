@@ -1,17 +1,17 @@
+
+#login-box {
+    margin-left: 5%;
+}
 #login-text {
     text-align: left;
 }
 
 #loginform {
     width: 400px;
-    margin-left: 0px;
     margin-top: 20px;
     text-align: left;
 }
 
-.input {
-    background-color: rgb(217, 220, 225);
-}
 
 #loginbutton {
     width: 100px;

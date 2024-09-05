@@ -1,10 +1,13 @@
 #home-box {
     margin-top: 10px;
-    font-family: fantasy;  
+    margin-left: 10%;  
     text-align: left;
+
 }
 
 #home-box h1 {
+    font-size: 50px;
+    font-family: fantasy;
     margin-bottom: 20px;
 }
 
@@ -12,4 +15,8 @@
    margin-left: 20px;
    
    
+}
+
+#home-img-box img {
+    width: 500px;
 }

@@ -1,7 +1,11 @@
+ body {
+  background-color: rgb(192, 241, 241);
+ }
  #root {  
   margin: 0 auto; 
   margin-left: 10px;
   text-align: center;
+  
 } 
 
 
