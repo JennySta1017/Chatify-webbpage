@@ -44,10 +44,7 @@ const MessageInput = ({ onNewMessage }) => {
            setNewMessage(''); // Rensa textfältet efter lyckad skickning
            onNewMessage(result.latestMessage); // Skicka det nya meddelandet till Chat-komponenten
            navigate("/Chat")
-       } else if (response.status === 403) {
-        // Token är ogiltig eller har gått ut
-        handleLogout(); // Logga ut användaren
-      } else {
+       } else {
            console.error('Failed to create message:', response.status);
        }
    } catch (error) {
