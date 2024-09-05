@@ -44,12 +44,27 @@ const Chat = ({
         setMessages(messages.filter(message => message.id !== id));
     };
 
+    //Hämta datum och tid
+    const currentDate = new Date();
+
+// Hämta dagens datum
+const year = currentDate.getFullYear();
+const month = String(currentDate.getMonth() + 1).padStart(2, '0'); // Månaderna är 0-indexerade, så man måste lägga till 1
+const day = String(currentDate.getDate()).padStart(2, '0');
+
+// Hämta aktuell tid
+const hours = String(currentDate.getHours()).padStart(2, '0');
+const minutes = String(currentDate.getMinutes()).padStart(2, '0');
+
+// Formatera datum och tid som du vill
+const formattedDate = `${year}-${month}-${day}`;
+const formattedTime = `${hours}:${minutes}`;
     
     return (
         <>
         <div id='user-box'>
             <div id='avatar-box'><img src={storedUserData.avatar} alt={`Bild av  ${storedUserData.user}`}/></div> 
-            <div id='username-box'><h1> {storedUserData?.user}</h1></div>
+            <div id='username-box'><h2> {storedUserData?.user}</h2></div>
         </div>
         <Button id='tonewmsg' variant="outline-primary" onClick={(toNewMessage)}>Skriv ett nytt meddelande</Button>
          
@@ -64,7 +79,7 @@ const Chat = ({
                             <div className="fake-message-item">
                                 {fakeMessage && (
                                 <>
-                                <span id='fake-writer'> {fakeMessage.username} skriver:</span>
+                                <span id='fake-writer'> {fakeMessage.username} skrev {formattedDate} kl. {formattedTime}:</span>
                                 <span id='fake-writer-text'><img src={fakeMessage.avatar} alt={`Bild av ${fakeMessage.username}`} /><p>{fakeMessage.text}</p></span>
                                             
                                 </>
@@ -72,7 +87,7 @@ const Chat = ({
                                 </div>
 
                             <div className="my-message-item">
-                                <span className='writer'>Du skriver:</span>
+                                <span className='writer'>Du skrev {formattedDate} kl. {formattedTime}:</span>
                                 <p>{message.text}</p>  
             
                         <Button 
@@ -86,7 +101,8 @@ const Chat = ({
                     );
                     })
                     ) : (
-                        <p id='no-msg'>Inga meddelanden finns att visa.</p>
+                        <p id='no-msg'>Det finns inga meddelanden att visa.</p>
+                       
                     )}
             </div> 
 

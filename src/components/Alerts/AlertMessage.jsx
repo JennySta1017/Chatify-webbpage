@@ -1,10 +1,10 @@
 
 
-function AlertMessageSuccess () {
+function AlertMessage () {
 
     return (
         <Alert variant="success"><p>Inloggningen lyckades!</p></Alert>
         )
     };
 
-    export default AlertMessageSuccess;
+    export default AlertMessage;
