@@ -44,7 +44,10 @@ const MessageInput = ({ onNewMessage }) => {
            setNewMessage(''); // Rensa textfältet efter lyckad skickning
            onNewMessage(result.latestMessage); // Skicka det nya meddelandet till Chat-komponenten
            navigate("/Chat")
-       } else {
+       } else if (response.status === 403) {
+        // Token är ogiltig eller har gått ut
+        handleLogout(); // Logga ut användaren
+      } else {
            console.error('Failed to create message:', response.status);
        }
    } catch (error) {
@@ -64,7 +67,7 @@ const MessageInput = ({ onNewMessage }) => {
             as="textarea" 
             placeholder="Skriv ett meddelande här..." 
             value={newMessage}
-            onChange={(e) => setNewMessage(DOMPurify.sanitize(e.target.value))}
+            onChange={(e) => setNewMessage }
             
             />
             </Form.Group>
