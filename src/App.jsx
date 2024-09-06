@@ -4,6 +4,7 @@ import NewUser from './components/register/register';
 import Home from './components/home/home';
 import Login from './components/login/login';
 import Chat from './components/chat/chat';
+import Loader from './components/loader/loader';
 import MessageInput from './components/message/Message';
 import { useState, useEffect, useRef } from "react";
 import { Route, Routes } from "react-router-dom";
@@ -110,7 +111,7 @@ function App() {
     // Hämta alla meddelanden för inloggad användare
     const getMessages = async () => {
     const token = localStorage.getItem('token'); // Hämta token från localStorage
-
+    setLoading(true);
     if (!token) {
       console.error('Token not found!');
     return;
@@ -136,6 +137,8 @@ function App() {
     }
   } catch (error) {
     console.error('Error fetching messages:', error);  
+  } finally {
+    setLoading(false); // Stoppa loader
   }
 };
 
@@ -174,7 +177,7 @@ function App() {
     // Definiera ProtectedRoute-komponenten
     const ProtectedRoute = ({ isAuthenticated, loading }) => {
       if(loading) {
-     return <div>Loading...</div>;
+     return <Loader />;
     } 
      return isAuthenticated ? <Outlet /> : <Navigate to="/Login" />;
   };
