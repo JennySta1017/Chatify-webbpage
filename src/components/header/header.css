@@ -4,12 +4,7 @@
     margin-top: 0px;
     margin: 10px;
     height: 20px;
-    z-index: 1;
-    
-     
-
 }
-
 
 #headimg {
     /* position: absolute; */
@@ -18,9 +13,7 @@
     width: 150px;
     margin: 5px; 
     margin-left: 80%;
-
 }
-
 
 @media screen and (max-width: 1024px) {
     #main-content {
@@ -31,13 +24,13 @@
 
 @media screen and (max-width: 768px) {
     #header {
-         height: auto; /*Låt höjden anpassas automatiskt */
+        height: auto; /*Höjden anpassas automatiskt */
         
     }
 
     #headimg {
         position: static; /* Gör positionen statisk så att den flyttar sig med sidlayouten */
-       margin-left: 250px;
+        margin-left: 250px;
         display: block;
     }
 

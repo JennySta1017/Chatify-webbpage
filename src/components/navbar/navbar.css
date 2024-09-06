@@ -21,6 +21,7 @@ nav {
   color: white;
   margin:10px;
 }
+
 /* Sidnavigerings meny */
 .sidenav {
     height: 100%;
@@ -38,7 +39,7 @@ nav {
 
   /* Öppna sidenav */
 .sidenav.open {
-  width: 230px; /* Sätt bredden till 250px när öppen */
+  width: 230px; 
 }
   
   /* Navigationslänkar i sidenav*/
@@ -53,7 +54,6 @@ nav {
     transition: 0.3s;
   }
 
-  /* Hover-effekt för länkar */
   .sidenav a:hover {
     color: #f1f1f1;
   }
@@ -72,7 +72,6 @@ nav {
 }
 
  #first-link {
-
   margin-top: 50px;
  }
 

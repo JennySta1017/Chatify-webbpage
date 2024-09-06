@@ -20,15 +20,15 @@ const NewUser = ({
   const [showAvatars, setShowAvatars] = useState(false);
 
     
-//För att välja en av de första 10 avatarerna
-const avatars = Array.from({ length: 10 }, (_, index) =>
+  //För att välja en av de första 10 avatarerna
+  const avatars = Array.from({ length: 10 }, (_, index) =>
   `https://i.pravatar.cc/150?img=${index + 1}`
-);
+  );
  
- // Funktion som visar eller döljer avatarlistan
- const toggleAvatarList = () => {
-  setShowAvatars(!showAvatars);
-};
+  // Funktion som visar eller döljer avatarlistan
+  const toggleAvatarList = () => {
+    setShowAvatars(!showAvatars);
+  };
     return (
         <div id='register-container'>
           <h2>Registrera dig nedan</h2>
@@ -93,22 +93,21 @@ const avatars = Array.from({ length: 10 }, (_, index) =>
               ))}
             </div>
           )}
-          {/* Visar vald avatar eller en plats för feedback */}
-          {avatarUrl && (
-          <div style={{ marginTop: '10px' }}>
-            <p>Vald avatar:</p>
-            <img id='vald-avatar' src={avatarUrl} alt="Vald avatar"  />
-          </div>
+            {/* Visar vald avatar eller en plats för feedback */}
+            {avatarUrl && (
+            <div style={{ marginTop: '10px' }}>
+              <p>Vald avatar:</p>
+              <img id='vald-avatar' src={avatarUrl} alt="Vald avatar"  />
+            </div>
           )}
-          </Form.Group>
-          <Button id="registerbutton" variant="dark" type="button" onClick={registerNewUser}>
-            Spara
-          </Button>
+            </Form.Group>
+            <Button id="registerbutton" variant="dark" type="button" onClick={registerNewUser}>
+              Spara
+            </Button>
           </Form>
-        </div>
-    );
-    
-};
+          </div>
+        );   
+      };
 
 export default NewUser;
 

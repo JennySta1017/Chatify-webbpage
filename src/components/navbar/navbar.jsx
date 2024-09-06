@@ -44,7 +44,7 @@ return (
           handleLogout(); // Kör utloggningslogiken
           closeNav(); // Stäng sidenav efter utloggning
         }}> 
-        <span>Logga ut</span></NavLink>
+          <span>Logga ut</span></NavLink>
        )} 
         </li>
         <li className='active-link' >
@@ -62,8 +62,7 @@ return (
           onClick={closeNav}>
           Chatta
           </NavLink>
-        </li>
-        
+        </li>        
      )}
     </ul>
   </nav>
