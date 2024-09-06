@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
-import './Chat.css';
+import './chat.css';
 import Button from 'react-bootstrap/Button';
 
 const fakeMessages = [{

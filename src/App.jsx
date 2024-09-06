@@ -1,9 +1,9 @@
-import Header from '/components/header/Header';
-import Navbar from './components/navbar/Navbar';
-import NewUser from './components/register/Register';
-import Home from './components/home/Home';
-import Login from './components/login/Login';
-import Chat from './components/chat/Chat';
+import Header from '/components/header/header';
+import Navbar from './components/navbar/navbar';
+import NewUser from './components/register/register';
+import Home from './components/home/home';
+import Login from './components/login/login';
+import Chat from './components/chat/chat';
 import MessageInput from './components/message/Message';
 import { useState, useEffect, useRef } from "react";
 import { Route, Routes } from "react-router-dom";
