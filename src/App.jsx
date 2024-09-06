@@ -246,6 +246,7 @@ function App() {
     // rensa input-fälten
       setUserName("");
       setPassword("");
+      getMessages();
       navigate("/Chat");
     } else {
       alert(data.error || "Ett fel uppstod vid inloggning");
