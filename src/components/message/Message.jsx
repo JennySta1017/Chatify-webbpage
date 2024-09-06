@@ -40,7 +40,6 @@ const MessageInput = ({ onNewMessage }) => {
        if (response.ok) {
            const result = await response.json();
            console.log('Message created successfully:', result);
-    
            setNewMessage(''); // Rensa textfältet efter lyckad skickning
            onNewMessage(result.latestMessage); // Skicka det nya meddelandet till Chat-komponenten
            navigate("/Chat")
@@ -50,37 +49,33 @@ const MessageInput = ({ onNewMessage }) => {
       } else {
            console.error('Failed to create message:', response.status);
        }
-   } catch (error) {
+    } catch (error) {
        console.error('Error creating message:', error);
-   }
-}; 
-
-    
+    }
+    }; 
 
     return (
-        <>
-
-        <Form id="chatmessage" >
+        <Form id="chatmessage" >        
+            <Form.Group className="mb-3" controlId="Textarea">
+            <Form.Label>Skriv ett nytt meddelande</Form.Label>
+            <Form.Control 
+                as="textarea" 
+                rows={5} 
+                className="input" 
+                placeholder="Skriv ett meddelande här..." 
+                value={newMessage}
+                onChange={(e) => setNewMessage(DOMPurify.sanitize(e.target.value)) }/>
+            </Form.Group>
             
-        <Form.Group className="mb-3" controlId="Textarea">
-        <Form.Label>Skriv ett nytt meddelande</Form.Label>
-        <Form.Control 
-            as="textarea" 
-            rows={5} 
-            className="input" 
-            placeholder="Skriv ett meddelande här..." 
-            value={newMessage}
-            onChange={(e) => setNewMessage(DOMPurify.sanitize(e.target.value)) }/>
-        </Form.Group>
-            
-        <Button id="chatbutton" variant="dark" type="button" onClick={createNewMessage}>
-            Skicka
-        </Button>
+            <Button 
+                id="chatbutton" 
+                variant="dark" 
+                type="button" 
+                onClick={createNewMessage}>
+                Skicka
+            </Button>
         </Form>
-
-</>
     );
-
 };
 
 export default MessageInput;

@@ -2,8 +2,7 @@
 #user-box {
     display: flex; /* Flexbox för att placera avatar och text horisontellt */
     padding-left: 10px; 
-    margin-left: 0px;
-    
+    margin-left: 0px;    
 }
 
 #username-box {
@@ -21,9 +20,7 @@
 }
 
 #tonewmsg {
-   margin: 20px 10px;
-   
-   
+   margin: 20px 10px;   
 }
 
 #message-box {
@@ -38,8 +35,7 @@
 
 .my-message-item, .fake-message-item {
     max-width: 30%;
-    word-wrap: break-word; 
-       
+    word-wrap: break-word;        
 }
 
 .my-message-item {
@@ -64,9 +60,7 @@
     float: right;
     display: flex;
     align-items: center;
-    margin-top: 5px;
-    
-    
+    margin-top: 5px; 
   }
 
   .fake-message-item { 
@@ -80,9 +74,7 @@
     to right,
     rgba(166, 169, 166, 0.979), rgba(238, 242, 238, 0.742));
     border: 2px solid grey;
-    border-radius: 15px;
-    
-    
+    border-radius: 15px;  
   }
 
   #fake-writer-text img {
@@ -90,22 +82,18 @@
     height: 50px;
     margin-right: 5px; 
     border-radius: 50%;
-    object-fit: cover;
-    
-    
+    object-fit: cover;   
  }
 
  #fake-writer-text {
     margin-left: 10px;
     display: flex;
-    align-items: center;
-        
+    align-items: center;       
  }
  
  #fake-writer {
     margin-left: 20px;
  }
-
 
  #no-msg {
     margin-top: 15%;
