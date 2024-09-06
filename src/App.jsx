@@ -1,4 +1,4 @@
-import Header from '/components/header/header';
+import Header from './components/header/header';
 import Navbar from './components/navbar/navbar';
 import NewUser from './components/register/register';
 import Home from './components/home/home';
