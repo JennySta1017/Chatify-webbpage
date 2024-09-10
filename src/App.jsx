@@ -6,7 +6,7 @@ import Login from './components/login/login';
 import Chat from './components/chat/chat';
 import Loader from './components/loader/loader';
 import MessageInput from './components/message/Message';
-import { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Route, Routes } from "react-router-dom";
 import { Outlet, Navigate, useNavigate } from "react-router-dom";
 import './App.css'
